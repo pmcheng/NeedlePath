@@ -30,8 +30,8 @@
         {
             this.pb = new System.Windows.Forms.PictureBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.pb_inplane = new System.Windows.Forms.PictureBox();
+            this.pb_outplane = new System.Windows.Forms.PictureBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.rbTip = new System.Windows.Forms.RadioButton();
             this.rbTarget = new System.Windows.Forms.RadioButton();
@@ -39,8 +39,8 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pb)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pb_inplane)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pb_outplane)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -69,23 +69,23 @@
             this.textBox1.Size = new System.Drawing.Size(529, 267);
             this.textBox1.TabIndex = 1;
             // 
-            // pictureBox1
+            // pb_inplane
             // 
-            this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pictureBox1.Location = new System.Drawing.Point(36, 406);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(240, 240);
-            this.pictureBox1.TabIndex = 2;
-            this.pictureBox1.TabStop = false;
+            this.pb_inplane.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pb_inplane.Location = new System.Drawing.Point(36, 406);
+            this.pb_inplane.Name = "pb_inplane";
+            this.pb_inplane.Size = new System.Drawing.Size(240, 240);
+            this.pb_inplane.TabIndex = 2;
+            this.pb_inplane.TabStop = false;
             // 
-            // pictureBox2
+            // pb_outplane
             // 
-            this.pictureBox2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pictureBox2.Location = new System.Drawing.Point(325, 406);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(240, 240);
-            this.pictureBox2.TabIndex = 3;
-            this.pictureBox2.TabStop = false;
+            this.pb_outplane.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pb_outplane.Location = new System.Drawing.Point(325, 406);
+            this.pb_outplane.Name = "pb_outplane";
+            this.pb_outplane.Size = new System.Drawing.Size(240, 240);
+            this.pb_outplane.TabIndex = 3;
+            this.pb_outplane.TabStop = false;
             // 
             // groupBox1
             // 
@@ -158,8 +158,8 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.pictureBox2);
-            this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.pb_outplane);
+            this.Controls.Add(this.pb_inplane);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.pb);
             this.KeyPreview = true;
@@ -167,8 +167,8 @@
             this.Text = "NeedlePath";
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
             ((System.ComponentModel.ISupportInitialize)(this.pb)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pb_inplane)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pb_outplane)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
@@ -180,8 +180,8 @@
 
         private System.Windows.Forms.PictureBox pb;
         private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.PictureBox pb_inplane;
+        private System.Windows.Forms.PictureBox pb_outplane;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.RadioButton rbTip;
         private System.Windows.Forms.RadioButton rbTarget;

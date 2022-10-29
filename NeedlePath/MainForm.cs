@@ -7,6 +7,7 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using System.Web;
+using static System.Windows.Forms.AxHost;
 
 
 namespace NeedlePath
@@ -146,10 +147,72 @@ namespace NeedlePath
                     p.Y = (int)((tip_y - y_pos) / form_pix_y);
                     g.DrawEllipse(new Pen(Color.Yellow, thick), p.X - radius, p.Y - radius, 2 * radius, 2 * radius);
                 }
-
                 if (pb.Image != null) pb.Image.Dispose();
                 pb.Image = bmp;
             }
+
+            if (start_x != 0)
+            {
+                bmp = new Bitmap(pb_inplane.Width, pb_inplane.Height);
+                using (Graphics g = Graphics.FromImage(bmp))
+                {
+                    g.FillRectangle(Brushes.Black, new Rectangle(Point.Empty, bmp.Size));
+                    g.DrawLine(new Pen(Color.White, thick), pb_inplane.Width / 2, 0, pb_inplane.Width / 2, pb_inplane.Height);
+                    g.DrawLine(new Pen(Color.White, thick), 0, pb_inplane.Height / 2, pb_inplane.Width, pb_inplane.Height / 2);
+
+                    if (target_x != 0)
+                    {
+
+                        double raw_inplane = Math.Atan2(target_y - start_y, target_x - start_x);
+
+                        g.DrawLine(new Pen(Color.Red, thick), pb_inplane.Width / 2, pb_inplane.Height / 2,
+                            (int)(pb_inplane.Width * 0.5 * (1 - Math.Cos(raw_inplane))),
+                            (int)(pb_inplane.Height * 0.5 * (1 - Math.Sin(raw_inplane))));
+                    }
+
+                    if (tip_x != 0)
+                    {
+                        double raw_inplane = Math.Atan2((tip_y - start_y), (tip_x - start_x));
+                        g.DrawLine(new Pen(Color.Yellow, thick), pb_inplane.Width / 2, pb_inplane.Height / 2,
+                            (int)(pb_inplane.Width * 0.5 * (1 - Math.Cos(raw_inplane))),
+                            (int)(pb_inplane.Height * 0.5 * (1 - Math.Sin(raw_inplane))));
+
+                    }
+                }
+                if (pb_inplane.Image != null) pb_inplane.Image.Dispose();
+                pb_inplane.Image = bmp;
+
+                bmp = new Bitmap(pb_outplane.Width, pb_outplane.Height);
+                using (Graphics g = Graphics.FromImage(bmp))
+                {
+                    g.FillRectangle(Brushes.Black, new Rectangle(Point.Empty, bmp.Size));
+                    g.DrawLine(new Pen(Color.White, thick), pb_outplane.Width / 2, 0, pb_outplane.Width / 2, pb_outplane.Height / 2);
+                    g.DrawLine(new Pen(Color.White, thick), 0, pb_outplane.Height / 2, pb_outplane.Width, pb_outplane.Height / 2);
+
+                    if (target_x != 0)
+                    {
+                        double distance_entry_target = Math.Sqrt((target_x-start_x) *(target_x-start_x) + (target_y-start_y)*(target_y-start_y) + (target_z-start_z)*(target_z-start_z));
+                        double entry_outplane = Math.Asin((target_z-start_z) / distance_entry_target);
+                        g.DrawLine(new Pen(Color.Red, thick), pb_outplane.Width / 2, pb_outplane.Height / 2,
+                            (int)(pb_outplane.Width * 0.5 * (1 - Math.Sin(entry_outplane))),
+                            (int)(pb_outplane.Height * 0.5 * (1 - Math.Cos(entry_outplane))));
+                    }
+
+                    if (tip_x != 0)
+                    {
+                        double distance_entry_tip = Math.Sqrt((tip_x - start_x) * (tip_x - start_x) + (tip_y - start_y) * (tip_y - start_y) + (tip_z - start_z) * (tip_z - start_z));
+                        double tip_outplane = Math.Asin((tip_z - start_z) / distance_entry_tip);
+                        g.DrawLine(new Pen(Color.Yellow, thick), pb_outplane.Width / 2, pb_outplane.Height / 2,
+                            (int)(pb_outplane.Width * 0.5 * (1 - Math.Sin(tip_outplane))),
+                            (int)(pb_outplane.Height * 0.5 * (1 - Math.Cos(tip_outplane))));
+                    }
+
+                }
+                if (pb_outplane.Image != null) pb_outplane.Image.Dispose();
+                pb_outplane.Image = bmp;
+
+            }
+
         }
 
 
