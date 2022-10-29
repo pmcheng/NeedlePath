@@ -26,12 +26,13 @@ namespace NeedlePath
         const double y_mouse_scale = 1;
         int anchor_width, anchor_center;
         Point anchor;
-        int center, width = 0;
+        int center=0, width = 0;
         bool leftMouseDown;
 
-        double start_x, start_y, start_z=0;
-        double target_x, target_y, target_z=0;
-        double tip_x, tip_y, tip_z;
+        double epsilon = 1e-5;
+        double start_x=0, start_y=0, start_z=0;
+        double target_x = 0, target_y = 0, target_z=0;
+        double tip_x = 0, tip_y = 0, tip_z = 0;
 
         public MainForm()
         {
@@ -114,6 +115,7 @@ namespace NeedlePath
 
         private void repaint()
         {
+            textBox1.Text = "";
             double x_pos = dcmfile.Dataset.GetValue<double>(DicomTag.ImagePositionPatient, 0);
             double y_pos = dcmfile.Dataset.GetValue<double>(DicomTag.ImagePositionPatient, 1);
             double z_pos = dcmfile.Dataset.GetValue<double>(DicomTag.ImagePositionPatient, 2);
@@ -153,6 +155,37 @@ namespace NeedlePath
 
             if (start_x != 0)
             {
+                double distance_entry_target = 0;
+                double target_inplane = 0;
+                double target_outplane = 0;
+                double tip_inplane = 0;
+                double tip_outplane = 0;
+                double distance_entry_tip = 0;
+                double distance_tip_target = 0;
+
+                if (target_x!=0)
+                {
+                    distance_entry_target = Math.Sqrt((target_x - start_x) * (target_x - start_x) + (target_y - start_y) * (target_y - start_y) + (target_z - start_z) * (target_z - start_z));
+                    target_inplane = Math.Atan2(target_y - start_y, target_x - start_x);
+                    target_outplane = Math.Asin((target_z - start_z) / (distance_entry_target+epsilon));
+                    textBoxLine($"Entry to target = {distance_entry_target:0} mm");
+                    textBoxLine($"In-plane angle from entry = {target_inplane*180/Math.PI:0}°");
+                    textBoxLine($"Out-of-plane angle from entry {target_outplane * 180 / Math.PI:0}°");
+                    if (tip_x != 0) 
+                    {
+                        distance_entry_tip = Math.Sqrt((tip_x - start_x) * (tip_x - start_x) + (tip_y - start_y) * (tip_y - start_y) + (tip_z - start_z) * (tip_z - start_z));
+                        tip_inplane = Math.Atan2(tip_y - start_y, tip_x - start_x);
+                        tip_outplane = Math.Asin((tip_z - start_z) / (distance_entry_tip+epsilon));
+                        distance_tip_target = Math.Sqrt((tip_x - target_x) * (tip_x - target_x) + (tip_y - target_y) * (tip_y - target_y) + (tip_z - target_z) * (tip_z - target_z));
+                        textBoxLine("");
+                        textBoxLine($"Tip to target = {distance_tip_target:0} mm");
+                        textBoxLine($"Tip in-plane angle = {tip_inplane*180/Math.PI:0}°");
+                        textBoxLine($"Tip out-of-plane angle = {tip_outplane*180/Math.PI:0}°");
+                        textBoxLine($"Correction in-plane angle = {(target_inplane-tip_inplane)*180/Math.PI:0}°");
+                        textBoxLine($"Correction out-of-plane angle = {(target_outplane-tip_outplane)*180/Math.PI:0}°");
+                    }
+                }
+
                 bmp = new Bitmap(pb_inplane.Width, pb_inplane.Height);
                 using (Graphics g = Graphics.FromImage(bmp))
                 {
@@ -162,20 +195,15 @@ namespace NeedlePath
 
                     if (target_x != 0)
                     {
-
-                        double raw_inplane = Math.Atan2(target_y - start_y, target_x - start_x);
-
                         g.DrawLine(new Pen(Color.Red, thick), pb_inplane.Width / 2, pb_inplane.Height / 2,
-                            (int)(pb_inplane.Width * 0.5 * (1 - Math.Cos(raw_inplane))),
-                            (int)(pb_inplane.Height * 0.5 * (1 - Math.Sin(raw_inplane))));
+                            (int)(pb_inplane.Width * 0.5 * (1 - Math.Cos(target_inplane))),
+                            (int)(pb_inplane.Height * 0.5 * (1 - Math.Sin(target_inplane))));
                     }
-
                     if (tip_x != 0)
                     {
-                        double raw_inplane = Math.Atan2((tip_y - start_y), (tip_x - start_x));
                         g.DrawLine(new Pen(Color.Yellow, thick), pb_inplane.Width / 2, pb_inplane.Height / 2,
-                            (int)(pb_inplane.Width * 0.5 * (1 - Math.Cos(raw_inplane))),
-                            (int)(pb_inplane.Height * 0.5 * (1 - Math.Sin(raw_inplane))));
+                            (int)(pb_inplane.Width * 0.5 * (1 - Math.Cos(tip_inplane))),
+                            (int)(pb_inplane.Height * 0.5 * (1 - Math.Sin(tip_inplane))));
 
                     }
                 }
@@ -191,17 +219,13 @@ namespace NeedlePath
 
                     if (target_x != 0)
                     {
-                        double distance_entry_target = Math.Sqrt((target_x-start_x) *(target_x-start_x) + (target_y-start_y)*(target_y-start_y) + (target_z-start_z)*(target_z-start_z));
-                        double entry_outplane = Math.Asin((target_z-start_z) / distance_entry_target);
                         g.DrawLine(new Pen(Color.Red, thick), pb_outplane.Width / 2, pb_outplane.Height / 2,
-                            (int)(pb_outplane.Width * 0.5 * (1 - Math.Sin(entry_outplane))),
-                            (int)(pb_outplane.Height * 0.5 * (1 - Math.Cos(entry_outplane))));
+                            (int)(pb_outplane.Width * 0.5 * (1 - Math.Sin(target_outplane))),
+                            (int)(pb_outplane.Height * 0.5 * (1 - Math.Cos(target_outplane))));
                     }
 
                     if (tip_x != 0)
                     {
-                        double distance_entry_tip = Math.Sqrt((tip_x - start_x) * (tip_x - start_x) + (tip_y - start_y) * (tip_y - start_y) + (tip_z - start_z) * (tip_z - start_z));
-                        double tip_outplane = Math.Asin((tip_z - start_z) / distance_entry_tip);
                         g.DrawLine(new Pen(Color.Yellow, thick), pb_outplane.Width / 2, pb_outplane.Height / 2,
                             (int)(pb_outplane.Width * 0.5 * (1 - Math.Sin(tip_outplane))),
                             (int)(pb_outplane.Height * 0.5 * (1 - Math.Cos(tip_outplane))));
