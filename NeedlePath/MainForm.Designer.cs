@@ -39,6 +39,7 @@
             this.rbStart = new System.Windows.Forms.RadioButton();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.btn_Markers = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pb)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pb_inplane)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pb_outplane)).BeginInit();
@@ -96,7 +97,7 @@
             this.groupBox1.Controls.Add(this.rbStart);
             this.groupBox1.Location = new System.Drawing.Point(569, 30);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(512, 82);
+            this.groupBox1.Size = new System.Drawing.Size(292, 82);
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Mouse Left Click";
@@ -104,7 +105,7 @@
             // rbTip
             // 
             this.rbTip.AutoSize = true;
-            this.rbTip.Location = new System.Drawing.Point(377, 32);
+            this.rbTip.Location = new System.Drawing.Point(212, 34);
             this.rbTip.Name = "rbTip";
             this.rbTip.Size = new System.Drawing.Size(55, 24);
             this.rbTip.TabIndex = 2;
@@ -114,7 +115,7 @@
             // rbTarget
             // 
             this.rbTarget.AutoSize = true;
-            this.rbTarget.Location = new System.Drawing.Point(207, 32);
+            this.rbTarget.Location = new System.Drawing.Point(112, 32);
             this.rbTarget.Name = "rbTarget";
             this.rbTarget.Size = new System.Drawing.Size(80, 24);
             this.rbTarget.TabIndex = 1;
@@ -152,11 +153,22 @@
             this.label2.TabIndex = 6;
             this.label2.Text = "by Phillip Cheng, MD MS";
             // 
+            // btn_Markers
+            // 
+            this.btn_Markers.Location = new System.Drawing.Point(893, 34);
+            this.btn_Markers.Name = "btn_Markers";
+            this.btn_Markers.Size = new System.Drawing.Size(188, 37);
+            this.btn_Markers.TabIndex = 7;
+            this.btn_Markers.Text = "Hide Markers";
+            this.btn_Markers.UseVisualStyleBackColor = true;
+            this.btn_Markers.Click += new System.EventHandler(this.btn_Markers_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1113, 674);
+            this.Controls.Add(this.btn_Markers);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.groupBox1);
@@ -192,6 +204,7 @@
         private System.Windows.Forms.RadioButton rbStart;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button btn_Markers;
     }
 }
 

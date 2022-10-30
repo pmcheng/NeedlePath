@@ -26,6 +26,7 @@ namespace NeedlePath
         Point anchor;
         int center = 0, width = 0;
         bool leftMouseDown;
+        bool showMarkers = true;
 
         double epsilon = 1e-5;
         double start_x = 0, start_y = 0, start_z = 0;
@@ -139,6 +140,7 @@ namespace NeedlePath
                 tip_y = py;
                 tip_z = pz;
             }
+            if (!showMarkers) toggle_button();
 
             repaint();
         }
@@ -191,6 +193,7 @@ namespace NeedlePath
 
         private void repaint()
         {
+            if (dcmfile == null) return;
             textBox1.Text = "";
             double x_pos = dcmfile.Dataset.GetValue<double>(DicomTag.ImagePositionPatient, 0);
             double y_pos = dcmfile.Dataset.GetValue<double>(DicomTag.ImagePositionPatient, 1);
@@ -206,38 +209,40 @@ namespace NeedlePath
             using (Graphics g = Graphics.FromImage(bmp))
             {
                 g.FillRectangle(Brushes.Transparent, new Rectangle(Point.Empty, bmp.Size));
-                Point p = new Point();
-                if (start_z == z_pos)
+                if (showMarkers)
                 {
-                    p.X = (int)((start_x - x_pos) / form_pix_x);
-                    p.Y = (int)((start_y - y_pos) / form_pix_y);
-                    g.DrawEllipse(new Pen(Color.Red, thick), p.X - radius, p.Y - radius, 2 * radius, 2 * radius);
-                }
-                if (target_z == z_pos)
-                {
-                    p.X = (int)((target_x - x_pos) / form_pix_x);
-                    p.Y = (int)((target_y - y_pos) / form_pix_y);
-                    g.DrawEllipse(new Pen(Color.LimeGreen, thick), p.X - radius, p.Y - radius, 2 * radius, 2 * radius);
-                }
-                if (tip_z == z_pos)
-                {
-                    p.X = (int)((tip_x - x_pos) / form_pix_x);
-                    p.Y = (int)((tip_y - y_pos) / form_pix_y);
-                    g.DrawEllipse(new Pen(Color.Yellow, thick), p.X - radius, p.Y - radius, 2 * radius, 2 * radius);
-                }
-
-                if (start_x != 0)
-                {
-                    if (target_x != 0)
+                    Point p = new Point();
+                    if (start_z == z_pos)
                     {
-                        drawLine(g, start_x, start_y, start_z, target_x, target_y, target_z, Color.Red);
-                        if (tip_x != 0)
+                        p.X = (int)((start_x - x_pos) / form_pix_x);
+                        p.Y = (int)((start_y - y_pos) / form_pix_y);
+                        g.DrawEllipse(new Pen(Color.Red, thick), p.X - radius, p.Y - radius, 2 * radius, 2 * radius);
+                    }
+                    if (target_z == z_pos)
+                    {
+                        p.X = (int)((target_x - x_pos) / form_pix_x);
+                        p.Y = (int)((target_y - y_pos) / form_pix_y);
+                        g.DrawEllipse(new Pen(Color.LimeGreen, thick), p.X - radius, p.Y - radius, 2 * radius, 2 * radius);
+                    }
+                    if (tip_z == z_pos)
+                    {
+                        p.X = (int)((tip_x - x_pos) / form_pix_x);
+                        p.Y = (int)((tip_y - y_pos) / form_pix_y);
+                        g.DrawEllipse(new Pen(Color.Yellow, thick), p.X - radius, p.Y - radius, 2 * radius, 2 * radius);
+                    }
+
+                    if (start_x != 0)
+                    {
+                        if (target_x != 0)
                         {
-                            drawLine(g, tip_x, tip_y, tip_z, target_x, target_y, target_z, Color.LimeGreen);
+                            drawLine(g, start_x, start_y, start_z, target_x, target_y, target_z, Color.Red);
+                            if (tip_x != 0)
+                            {
+                                drawLine(g, tip_x, tip_y, tip_z, target_x, target_y, target_z, Color.LimeGreen);
+                            }
                         }
                     }
                 }
-
 
                 if (pb.Image != null) pb.Image.Dispose();
                 pb.Image = bmp;
@@ -329,7 +334,24 @@ namespace NeedlePath
 
         }
 
+        private void toggle_button()
+        {
+            showMarkers = !showMarkers;
+            if (showMarkers)
+            {
+                btn_Markers.Text = "Hide Markers";
+            }
+            else
+            {
+                btn_Markers.Text = "Show Markers";
+            }
+        }
 
+        private void btn_Markers_Click(object sender, EventArgs e)
+        {
+            toggle_button();
+            repaint();
+        }
 
         private void pb_MouseWheel(object sender, MouseEventArgs e)
         {
