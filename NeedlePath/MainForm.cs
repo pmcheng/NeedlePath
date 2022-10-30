@@ -7,8 +7,6 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using System.Web;
-using static System.Windows.Forms.AxHost;
-
 
 namespace NeedlePath
 {
@@ -113,6 +111,52 @@ namespace NeedlePath
             repaint();
         }
 
+        public static double Clamp(double value, double min, double max)
+        {
+            return (value < min) ? min : (value > max) ? max : value;
+        }
+
+        private void drawLine(Graphics g, double ax, double ay, double az, double bx, double by, double bz, Color c)
+        {
+            double x_pos = dcmfile.Dataset.GetValue<double>(DicomTag.ImagePositionPatient, 0);
+            double y_pos = dcmfile.Dataset.GetValue<double>(DicomTag.ImagePositionPatient, 1);
+            double z_pos = dcmfile.Dataset.GetValue<double>(DicomTag.ImagePositionPatient, 2);
+            double x_pix = dcmfile.Dataset.GetValue<double>(DicomTag.PixelSpacing, 0);
+            double y_pix = dcmfile.Dataset.GetValue<double>(DicomTag.PixelSpacing, 1);
+            double z_pix = dcmfile.Dataset.GetValue<double>(DicomTag.SliceThickness, 0);
+            double rows = dcmfile.Dataset.GetValue<int>(DicomTag.Rows, 0);
+            double cols = dcmfile.Dataset.GetValue<int>(DicomTag.Columns, 0);
+
+            double form_pix_x = cols * x_pix / pb.Width;
+            double form_pix_y = cols * y_pix / pb.Height;
+            double start, end;
+
+            if ((z_pos>Math.Max(az,bz)) || (z_pos<Math.Min(az,bz))) return;
+
+            double delta_z = bz - az;
+            if (az == bz)
+            {
+                start = 0;
+                end = 1;
+            }
+            else
+            {
+                start = Clamp((z_pos - az - z_pix) / delta_z, 0, 1);
+                end = Clamp((z_pos - az + z_pix) / delta_z, 0, 1);
+            }
+            double a_x = (ax - x_pos) / form_pix_x;
+            double a_y = (ay - y_pos) / form_pix_y;
+            double b_x = (bx - x_pos) / form_pix_x;
+            double b_y = (by - y_pos) / form_pix_y;
+            Point M = new Point();
+            Point N = new Point();
+            M.X = (int)(a_x + start * (b_x - a_x));
+            M.Y = (int)(a_y + start * (b_y - a_y));
+            N.X = (int)(a_x + end * (b_x - a_x));
+            N.Y = (int)(a_y + end * (b_y - a_y));
+            g.DrawLine(new Pen(c, thick), M, N);
+        }
+
         private void repaint()
         {
             textBox1.Text = "";
@@ -149,6 +193,20 @@ namespace NeedlePath
                     p.Y = (int)((tip_y - y_pos) / form_pix_y);
                     g.DrawEllipse(new Pen(Color.Yellow, thick), p.X - radius, p.Y - radius, 2 * radius, 2 * radius);
                 }
+
+                if (start_x!=0)
+                {
+                    if (target_x!=0)
+                    {
+                        drawLine(g, start_x, start_y, start_z, target_x, target_y, target_z, Color.Red);
+                    }
+                    if (tip_x!=0)
+                    {
+
+                    }
+                }
+
+
                 if (pb.Image != null) pb.Image.Dispose();
                 pb.Image = bmp;
             }
