@@ -150,4 +150,8 @@
     <None Include="App.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>C:\bin\Ilmerge.exe /wildcards /target:winexe /out:"$(ProjectDir)bin\$(TargetFileName)" "$(TargetDir)$(TargetFileName)" "$(TargetDir)*.dll"
+if not "%2525RADUSC_DEPLOY%2525"=="" copy "$(ProjectDir)bin\$(TargetFileName)" "%2525RADUSC_DEPLOY%2525"</PostBuildEvent>
+  </PropertyGroup>
 </Project>

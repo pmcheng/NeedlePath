@@ -24,12 +24,12 @@ namespace NeedlePath
         const double y_mouse_scale = 1;
         int anchor_width, anchor_center;
         Point anchor;
-        int center=0, width = 0;
+        int center = 0, width = 0;
         bool leftMouseDown;
 
         double epsilon = 1e-5;
-        double start_x=0, start_y=0, start_z=0;
-        double target_x = 0, target_y = 0, target_z=0;
+        double start_x = 0, start_y = 0, start_z = 0;
+        double target_x = 0, target_y = 0, target_z = 0;
         double tip_x = 0, tip_y = 0, tip_z = 0;
 
         public MainForm()
@@ -37,7 +37,7 @@ namespace NeedlePath
             InitializeComponent();
 
             new DicomSetupBuilder().RegisterServices(s => s.AddFellowOakDicom().AddImageManager<WinFormsImageManager>()).Build();
-            pb.MouseWheel+= new MouseEventHandler(this.pb_MouseWheel);
+            pb.MouseWheel += new MouseEventHandler(this.pb_MouseWheel);
             pb.AllowDrop = true;
             syn = new Synapse5();
 
@@ -84,9 +84,9 @@ namespace NeedlePath
             double cols = dcmfile.Dataset.GetValue<int>(DicomTag.Columns, 0);
 
             px = dcmfile.Dataset.GetValue<double>(DicomTag.ImagePositionPatient, 0);
-            px += (float) p.X / pb.Width * cols * x_pix;
+            px += (float)p.X / pb.Width * cols * x_pix;
             py = dcmfile.Dataset.GetValue<double>(DicomTag.ImagePositionPatient, 1);
-            py += (float) p.Y / pb.Height * rows * y_pix;
+            py += (float)p.Y / pb.Height * rows * y_pix;
             pz = dcmfile.Dataset.GetValue<double>(DicomTag.ImagePositionPatient, 2);
 
             if (rbStart.Checked)
@@ -131,7 +131,7 @@ namespace NeedlePath
             double form_pix_y = cols * y_pix / pb.Height;
             double start, end;
 
-            if ((z_pos>Math.Max(az,bz)) || (z_pos<Math.Min(az,bz))) return;
+            if ((z_pos > Math.Max(az, bz)) || (z_pos < Math.Min(az, bz))) return;
 
             double delta_z = bz - az;
             if (az == bz)
@@ -194,15 +194,15 @@ namespace NeedlePath
                     g.DrawEllipse(new Pen(Color.Yellow, thick), p.X - radius, p.Y - radius, 2 * radius, 2 * radius);
                 }
 
-                if (start_x!=0)
+                if (start_x != 0)
                 {
-                    if (target_x!=0)
+                    if (target_x != 0)
                     {
                         drawLine(g, start_x, start_y, start_z, target_x, target_y, target_z, Color.Red);
-                    }
-                    if (tip_x!=0)
-                    {
-
+                        if (tip_x != 0)
+                        {
+                            drawLine(g, tip_x, tip_y, tip_z, target_x, target_y, target_z, Color.Green);
+                        }
                     }
                 }
 
@@ -221,26 +221,26 @@ namespace NeedlePath
                 double distance_entry_tip = 0;
                 double distance_tip_target = 0;
 
-                if (target_x!=0)
+                if (target_x != 0)
                 {
                     distance_entry_target = Math.Sqrt((target_x - start_x) * (target_x - start_x) + (target_y - start_y) * (target_y - start_y) + (target_z - start_z) * (target_z - start_z));
                     target_inplane = Math.Atan2(target_y - start_y, target_x - start_x);
-                    target_outplane = Math.Asin((target_z - start_z) / (distance_entry_target+epsilon));
+                    target_outplane = Math.Asin((target_z - start_z) / (distance_entry_target + epsilon));
                     textBoxLine($"Entry to target = {distance_entry_target:0} mm");
-                    textBoxLine($"In-plane angle from entry = {target_inplane*180/Math.PI:0}°");
+                    textBoxLine($"In-plane angle from entry = {target_inplane * 180 / Math.PI:0}°");
                     textBoxLine($"Out-of-plane angle from entry {target_outplane * 180 / Math.PI:0}°");
-                    if (tip_x != 0) 
+                    if (tip_x != 0)
                     {
                         distance_entry_tip = Math.Sqrt((tip_x - start_x) * (tip_x - start_x) + (tip_y - start_y) * (tip_y - start_y) + (tip_z - start_z) * (tip_z - start_z));
                         tip_inplane = Math.Atan2(tip_y - start_y, tip_x - start_x);
-                        tip_outplane = Math.Asin((tip_z - start_z) / (distance_entry_tip+epsilon));
+                        tip_outplane = Math.Asin((tip_z - start_z) / (distance_entry_tip + epsilon));
                         distance_tip_target = Math.Sqrt((tip_x - target_x) * (tip_x - target_x) + (tip_y - target_y) * (tip_y - target_y) + (tip_z - target_z) * (tip_z - target_z));
                         textBoxLine("");
                         textBoxLine($"Tip to target = {distance_tip_target:0} mm");
-                        textBoxLine($"Tip in-plane angle = {tip_inplane*180/Math.PI:0}°");
-                        textBoxLine($"Tip out-of-plane angle = {tip_outplane*180/Math.PI:0}°");
-                        textBoxLine($"Correction in-plane angle = {(target_inplane-tip_inplane)*180/Math.PI:0}°");
-                        textBoxLine($"Correction out-of-plane angle = {(target_outplane-tip_outplane)*180/Math.PI:0}°");
+                        textBoxLine($"Tip in-plane angle = {tip_inplane * 180 / Math.PI:0}°");
+                        textBoxLine($"Tip out-of-plane angle = {tip_outplane * 180 / Math.PI:0}°");
+                        textBoxLine($"Correction in-plane angle = {(target_inplane - tip_inplane) * 180 / Math.PI:0}°");
+                        textBoxLine($"Correction out-of-plane angle = {(target_outplane - tip_outplane) * 180 / Math.PI:0}°");
                     }
                 }
 
@@ -311,19 +311,20 @@ namespace NeedlePath
 
         private void repaint_bg_image()
         {
-            if (dcmimage!=null)
+            if (dcmimage != null)
             {
-                if (width>0)
+                if (width > 0)
                 {
                     dcmimage.WindowCenter = center;
                     dcmimage.WindowWidth = width;
-                } else
+                }
+                else
                 {
                     center = (int)dcmimage.WindowCenter;
                     width = (int)dcmimage.WindowWidth;
                 }
                 bmp = new Bitmap(dcmimage.RenderImage().AsSharedBitmap());
-                if (pb.BackgroundImage!=null) pb.BackgroundImage.Dispose();
+                if (pb.BackgroundImage != null) pb.BackgroundImage.Dispose();
                 pb.BackgroundImage = bmp;
             }
         }
@@ -395,7 +396,7 @@ namespace NeedlePath
             else if (leftMouseDown)
             {
                 leftMouseDown = false;
-            }           
+            }
         }
 
         private void pb_DragDrop(object sender, DragEventArgs e)
@@ -435,7 +436,8 @@ namespace NeedlePath
 
                     foreach (dynamic s in result.series)
                     {
-                        if (s.iuid==seriesUID) {
+                        if (s.iuid == seriesUID)
+                        {
                             foreach (dynamic t in s.images)
                             {
                                 string imageUID = (string)t.iuid;
