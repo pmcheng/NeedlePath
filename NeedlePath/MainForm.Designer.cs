@@ -48,7 +48,7 @@
             // 
             this.pb.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.pb.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pb.Location = new System.Drawing.Point(602, 134);
+            this.pb.Location = new System.Drawing.Point(569, 134);
             this.pb.Name = "pb";
             this.pb.Size = new System.Drawing.Size(512, 512);
             this.pb.TabIndex = 0;
@@ -66,7 +66,7 @@
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
             this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBox1.Size = new System.Drawing.Size(529, 267);
+            this.textBox1.Size = new System.Drawing.Size(503, 269);
             this.textBox1.TabIndex = 1;
             // 
             // pb_inplane
@@ -82,7 +82,7 @@
             // 
             this.pb_outplane.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.pb_outplane.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pb_outplane.Location = new System.Drawing.Point(325, 406);
+            this.pb_outplane.Location = new System.Drawing.Point(299, 406);
             this.pb_outplane.Name = "pb_outplane";
             this.pb_outplane.Size = new System.Drawing.Size(240, 240);
             this.pb_outplane.TabIndex = 3;
@@ -93,7 +93,7 @@
             this.groupBox1.Controls.Add(this.rbTip);
             this.groupBox1.Controls.Add(this.rbTarget);
             this.groupBox1.Controls.Add(this.rbStart);
-            this.groupBox1.Location = new System.Drawing.Point(602, 30);
+            this.groupBox1.Location = new System.Drawing.Point(569, 30);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(512, 82);
             this.groupBox1.TabIndex = 4;
@@ -136,7 +136,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(215, 30);
+            this.label1.Location = new System.Drawing.Point(211, 30);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(136, 26);
             this.label1.TabIndex = 5;
@@ -145,7 +145,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(195, 66);
+            this.label2.Location = new System.Drawing.Point(191, 66);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(181, 20);
             this.label2.TabIndex = 6;
@@ -155,7 +155,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1155, 684);
+            this.ClientSize = new System.Drawing.Size(1113, 674);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.groupBox1);
@@ -164,6 +164,7 @@
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.pb);
             this.KeyPreview = true;
+            this.MinimumSize = new System.Drawing.Size(1135, 730);
             this.Name = "MainForm";
             this.Text = "NeedlePath";
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);

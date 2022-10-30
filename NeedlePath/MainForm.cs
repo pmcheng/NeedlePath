@@ -217,7 +217,7 @@ namespace NeedlePath
                 {
                     p.X = (int)((target_x - x_pos) / form_pix_x);
                     p.Y = (int)((target_y - y_pos) / form_pix_y);
-                    g.DrawEllipse(new Pen(Color.Green, thick), p.X - radius, p.Y - radius, 2 * radius, 2 * radius);
+                    g.DrawEllipse(new Pen(Color.LimeGreen, thick), p.X - radius, p.Y - radius, 2 * radius, 2 * radius);
                 }
                 if (tip_z == z_pos)
                 {
@@ -233,7 +233,7 @@ namespace NeedlePath
                         drawLine(g, start_x, start_y, start_z, target_x, target_y, target_z, Color.Red);
                         if (tip_x != 0)
                         {
-                            drawLine(g, tip_x, tip_y, tip_z, target_x, target_y, target_z, Color.Green);
+                            drawLine(g, tip_x, tip_y, tip_z, target_x, target_y, target_z, Color.LimeGreen);
                         }
                     }
                 }
