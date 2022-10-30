@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.pb = new System.Windows.Forms.PictureBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.pb_inplane = new System.Windows.Forms.PictureBox();
@@ -163,6 +164,7 @@
             this.Controls.Add(this.pb_inplane);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.pb);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.MinimumSize = new System.Drawing.Size(1135, 730);
             this.Name = "MainForm";

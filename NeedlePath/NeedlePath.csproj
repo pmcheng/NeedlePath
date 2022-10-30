@@ -32,6 +32,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>protractor_needlepath.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="fo-dicom.core, Version=5.0.3.0, Culture=neutral, PublicKeyToken=3a13f649e28eb09a, processorArchitecture=MSIL">
       <HintPath>..\packages\fo-dicom.5.0.3\lib\netstandard2.0\fo-dicom.core.dll</HintPath>
@@ -148,6 +151,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="protractor_needlepath.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
