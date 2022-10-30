@@ -33,6 +33,8 @@ namespace NeedlePath
         double target_x = 0, target_y = 0, target_z = 0;
         double tip_x = 0, tip_y = 0, tip_z = 0;
 
+        int pb_padding;
+
         public MainForm()
         {
             InitializeComponent();
@@ -351,6 +353,29 @@ namespace NeedlePath
         {
             toggle_button();
             repaint();
+        }
+
+        private void MainForm_Resize(object sender, EventArgs e)
+        {
+            if (pb_padding == 0) return;
+            int width = this.ClientSize.Width - pb.Location.X - pb_padding;
+            int height = this.ClientSize.Height - pb.Location.Y - pb_padding;
+            if (width > height)
+            {
+                pb.Height = height;
+                pb.Width = height;
+            }
+            else
+            {
+                pb.Height = width;
+                pb.Width = width;
+            }
+            repaint();
+        }
+
+        private void MainForm_Shown(object sender, EventArgs e)
+        {
+            pb_padding = this.ClientSize.Width - pb.Location.X - pb.Width;
         }
 
         private void pb_MouseWheel(object sender, MouseEventArgs e)

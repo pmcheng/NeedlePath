@@ -181,7 +181,9 @@
             this.MinimumSize = new System.Drawing.Size(1135, 730);
             this.Name = "MainForm";
             this.Text = "NeedlePath";
+            this.Shown += new System.EventHandler(this.MainForm_Shown);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
+            this.Resize += new System.EventHandler(this.MainForm_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.pb)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pb_inplane)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pb_outplane)).EndInit();
