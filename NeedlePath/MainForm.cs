@@ -333,6 +333,7 @@ namespace NeedlePath
 
         private void pb_MouseWheel(object sender, MouseEventArgs e)
         {
+            if (dcmimage == null) return;
             int oldidx = dcmidx;
             if (e.Delta > 0) dcmidx--;
             if (e.Delta < 0) dcmidx++;
