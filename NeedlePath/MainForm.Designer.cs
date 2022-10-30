@@ -80,6 +80,7 @@
             // 
             // pb_outplane
             // 
+            this.pb_outplane.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.pb_outplane.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pb_outplane.Location = new System.Drawing.Point(325, 406);
             this.pb_outplane.Name = "pb_outplane";

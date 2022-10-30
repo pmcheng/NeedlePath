@@ -53,8 +53,40 @@ namespace NeedlePath
 
         private void MainForm_KeyDown(object sender, KeyEventArgs e)
         {
+            if (dcmimage == null) return;
+
             switch (e.KeyCode)
             {
+                case Keys.Home:
+                    dcmidx = 0;
+                    load_dicom();
+                    break;
+                case Keys.End:
+                    dcmidx = dcmfiles.Count - 1;
+                    load_dicom();
+                    break;
+                case Keys.Down:
+                    dcmidx += 1;
+                    if (dcmidx >= dcmfiles.Count)
+                    {
+                        dcmidx = dcmfiles.Count - 1;
+                    }
+                    else
+                    {
+                        load_dicom();
+                    }
+                    break;
+                case Keys.Up:
+                    dcmidx -= 1;
+                    if (dcmidx < 0)
+                    {
+                        dcmidx = 0;
+                    }
+                    else
+                    {
+                        load_dicom();
+                    }
+                    break;
                 case Keys.NumPad0:
                     center = 400;
                     width = 2000;
