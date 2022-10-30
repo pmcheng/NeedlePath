@@ -7,6 +7,7 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using System.Web;
+using System.Linq;
 
 namespace NeedlePath
 {
@@ -423,6 +424,12 @@ namespace NeedlePath
                 e.Effect = DragDropEffects.Copy;
                 return;
             }
+            Array data = e.Data.GetData("FileDrop") as Array;
+            if ((data != null) && (data.GetValue(0) is String))
+            {
+                e.Effect = DragDropEffects.Copy;
+                return;
+            }
             if (e.Data.GetDataPresent("Text"))
             {
                 e.Effect = DragDropEffects.Copy;
@@ -534,6 +541,26 @@ namespace NeedlePath
                     load_dicom();
                 }
             }
+
+            Array data = e.Data.GetData("FileDrop") as Array;
+            if ((data != null) && (data.GetValue(0) is String))
+            {
+                string dcmdir = ((string[])data)[0];
+                FileAttributes attr = File.GetAttributes(dcmdir);
+                
+                if ((attr & FileAttributes.Directory) == FileAttributes.Directory)
+                {
+                    List<string> imageFiles = Directory.GetFiles(dcmdir, "*.dcm").ToList<string>();
+                    if (imageFiles.Count > 0)
+                    {
+                        dcmidx = 0;
+                        dcmfiles = imageFiles;
+                        load_dicom();
+                    }
+                }
+
+            }
+
         }
     }
 }
