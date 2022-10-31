@@ -379,6 +379,8 @@ namespace NeedlePath
             pb_padding = this.ClientSize.Width - pb.Location.X - pb.Width;
         }
 
+
+
         private void pb_MouseWheel(object sender, MouseEventArgs e)
         {
             if (dcmimage == null) return;
@@ -472,8 +474,6 @@ namespace NeedlePath
 
         }
 
-
-
         private void pb_MouseUp(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right)
@@ -484,6 +484,69 @@ namespace NeedlePath
             {
                 leftMouseDown = false;
             }
+        }
+
+        private void backgroundWorker1_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        {
+            DownloadObject dObj = e.Argument as DownloadObject;
+
+            Uri site = new Uri(dObj.datasource);
+            string url = site.GetLeftPart(UriPartial.Authority);
+            if (!syn.SetAccessToken(url))
+            {
+                syn.SetAccessTokenEnvironment(url);
+            }
+            dynamic result = syn.GetStudyDetails(dObj.studyUID);
+
+            string tempPath = Path.GetTempPath();
+            dcmfiles = new List<string>();
+
+            foreach (dynamic s in result.series)
+            {
+                if (s.iuid == dObj.seriesUID)
+                {
+                    ProgressObject pObj = new ProgressObject();
+                    int total = s.images.Count;
+                    
+                    for (int i=0; i<total; i++)
+                    {
+                        string imageUID = (string)s.images[i].iuid;
+                        string imageFile = Path.Combine(tempPath, imageUID + ".dcm");
+                        dcmfiles.Add(imageFile);
+                        syn.GetDicom(dObj.studyUID, dObj.seriesUID, imageUID, imageFile);
+
+                        pObj.message = $"Retrieving {i+1} of {total}";
+                        backgroundWorker1.ReportProgress((int) (i*100.0/total), pObj);
+                        
+                        if (imageUID == dObj.objectUID)
+                        {
+                            dcmidx = dcmfiles.Count - 1;
+                        }
+                    }
+                }
+            }
+        }
+
+        private void backgroundWorker1_ProgressChanged(object sender, System.ComponentModel.ProgressChangedEventArgs e)
+        {
+            ProgressObject pObj = e.UserState as ProgressObject;
+            textBoxLine(pObj.message);
+        }
+
+        private void backgroundWorker1_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
+        {
+            load_dicom();
+        }
+        class ProgressObject
+        {
+            public string message;
+        }
+        class DownloadObject
+        {
+            public string datasource;
+            public string studyUID;
+            public string seriesUID;
+            public string objectUID;
         }
 
         private void pb_DragDrop(object sender, DragEventArgs e)
@@ -506,39 +569,12 @@ namespace NeedlePath
                 }
                 if ((studyUID != null) && (seriesUID != null) && (objectUID != null))
                 {
-                    textBox1.Text = "";
-                    //textBoxLine($"studyUID = {studyUID}");
-                    //textBoxLine($"seriesUID = {seriesUID}");
-                    //textBoxLine($"objectUID = {objectUID}");
-                    Uri site = new Uri(datasource);
-                    string url = site.GetLeftPart(UriPartial.Authority);
-                    if (!syn.SetAccessToken(url))
-                    {
-                        syn.SetAccessTokenEnvironment(url);
-                    }
-                    dynamic result = syn.GetStudyDetails(studyUID);
-
-                    string tempPath = Path.GetTempPath();
-                    dcmfiles = new List<string>();
-
-                    foreach (dynamic s in result.series)
-                    {
-                        if (s.iuid == seriesUID)
-                        {
-                            foreach (dynamic t in s.images)
-                            {
-                                string imageUID = (string)t.iuid;
-                                string imageFile = Path.Combine(tempPath, imageUID + ".dcm");
-                                dcmfiles.Add(imageFile);
-                                syn.GetDicom(studyUID, seriesUID, imageUID, imageFile);
-                                if (imageUID == objectUID)
-                                {
-                                    dcmidx = dcmfiles.Count - 1;
-                                }
-                            }
-                        }
-                    }
-                    load_dicom();
+                    DownloadObject dObj = new DownloadObject();
+                    dObj.datasource = datasource;
+                    dObj.studyUID = studyUID;
+                    dObj.seriesUID = seriesUID;
+                    dObj.objectUID = objectUID;
+                    backgroundWorker1.RunWorkerAsync(dObj);
                 }
             }
 
