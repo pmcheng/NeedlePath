@@ -139,7 +139,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(211, 30);
+            this.label1.Location = new System.Drawing.Point(219, 30);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(136, 26);
             this.label1.TabIndex = 5;
@@ -148,9 +148,10 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(191, 66);
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.5F);
+            this.label2.Location = new System.Drawing.Point(178, 66);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(181, 20);
+            this.label2.Size = new System.Drawing.Size(219, 24);
             this.label2.TabIndex = 6;
             this.label2.Text = "by Phillip Cheng, MD MS";
             // 
