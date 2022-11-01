@@ -194,6 +194,20 @@ namespace NeedlePath
             g.DrawLine(new Pen(c, thick), M, N);
         }
 
+        private double in_plane_print(double angle)
+        {
+            angle = angle * 180 / Math.PI;
+            if (angle > 90) angle = 180 - angle;
+            if (angle < -90) angle = -180 - angle;
+            return angle;
+        }
+
+        private double in_plane_difference(double angle1, double angle2)
+        {
+            double difference = Math.Abs(angle1 - angle2) * 180 / Math.PI;
+            if (difference > 180) difference = 360 - difference;
+            return difference;
+        }
         private void repaint()
         {
             if (dcmfile == null) return;
@@ -267,8 +281,8 @@ namespace NeedlePath
                     target_inplane = Math.Atan2(target_y - start_y, target_x - start_x);
                     target_outplane = Math.Asin((target_z - start_z) / (distance_entry_target + epsilon));
                     textBoxLine($"Entry to target = {distance_entry_target:0} mm");
-                    textBoxLine($"In-plane angle from entry = {target_inplane * 180 / Math.PI:0}°");
-                    textBoxLine($"Out-of-plane angle from entry {target_outplane * 180 / Math.PI:0}°");
+                    textBoxLine($"Entry to target in-plane angle = {in_plane_print(target_inplane):0}°");
+                    textBoxLine($"Entry to target out-of-plane angle = {target_outplane * 180 / Math.PI:0}°");
                     if (tip_x != 0)
                     {
                         distance_entry_tip = Math.Sqrt((tip_x - start_x) * (tip_x - start_x) + (tip_y - start_y) * (tip_y - start_y) + (tip_z - start_z) * (tip_z - start_z));
@@ -277,9 +291,10 @@ namespace NeedlePath
                         distance_tip_target = Math.Sqrt((tip_x - target_x) * (tip_x - target_x) + (tip_y - target_y) * (tip_y - target_y) + (tip_z - target_z) * (tip_z - target_z));
                         textBoxLine("");
                         textBoxLine($"Tip to target = {distance_tip_target:0} mm");
-                        textBoxLine($"Tip in-plane angle = {tip_inplane * 180 / Math.PI:0}°");
-                        textBoxLine($"Tip out-of-plane angle = {tip_outplane * 180 / Math.PI:0}°");
-                        textBoxLine($"Correction in-plane angle = {(target_inplane - tip_inplane) * 180 / Math.PI:0}°");
+                        textBoxLine($"Entry to tip in-plane angle = {in_plane_print(tip_inplane):0}°");
+                        textBoxLine($"Entry to tip out-of-plane angle = {tip_outplane * 180 / Math.PI:0}°");
+                        textBoxLine("");
+                        textBoxLine($"Correction in-plane angle = {in_plane_difference(target_inplane, tip_inplane):0}°");
                         textBoxLine($"Correction out-of-plane angle = {(target_outplane - tip_outplane) * 180 / Math.PI:0}°");
                     }
                 }
@@ -318,14 +333,14 @@ namespace NeedlePath
                     if (target_x != 0)
                     {
                         g.DrawLine(new Pen(Color.Red, thick), pb_outplane.Width / 2, pb_outplane.Height / 2,
-                            (int)(pb_outplane.Width * 0.5 * (1 - Math.Sin(target_outplane))),
+                            (int)(pb_outplane.Width * 0.5 * (1 + Math.Sin(target_outplane))),
                             (int)(pb_outplane.Height * 0.5 * (1 - Math.Cos(target_outplane))));
                     }
 
                     if (tip_x != 0)
                     {
                         g.DrawLine(new Pen(Color.Yellow, thick), pb_outplane.Width / 2, pb_outplane.Height / 2,
-                            (int)(pb_outplane.Width * 0.5 * (1 - Math.Sin(tip_outplane))),
+                            (int)(pb_outplane.Width * 0.5 * (1 + Math.Sin(tip_outplane))),
                             (int)(pb_outplane.Height * 0.5 * (1 - Math.Cos(tip_outplane))));
                     }
 
@@ -409,6 +424,11 @@ namespace NeedlePath
                 bmp = new Bitmap(dcmimage.RenderImage().AsSharedBitmap());
                 if (pb.BackgroundImage != null) pb.BackgroundImage.Dispose();
                 pb.BackgroundImage = bmp;
+
+                //double z_pos = dcmfile.Dataset.GetValue<double>(DicomTag.ImagePositionPatient, 2);
+                double sl = dcmfile.Dataset.GetValue<double>(DicomTag.SliceLocation, 0);
+                labelz.Text = $"SL:{sl} ({dcmidx+1}/{dcmfiles.Count})";
+                //labelz.Text = $"SL:{sl} Z:{z_pos} ({dcmidx + 1}/{dcmfiles.Count})";
             }
         }
 

@@ -41,6 +41,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.btn_Markers = new System.Windows.Forms.Button();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.labelz = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pb)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pb_inplane)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pb_outplane)).BeginInit();
@@ -172,11 +173,20 @@
             this.backgroundWorker1.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.backgroundWorker1_ProgressChanged);
             this.backgroundWorker1.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker1_RunWorkerCompleted);
             // 
+            // labelz
+            // 
+            this.labelz.AutoSize = true;
+            this.labelz.Location = new System.Drawing.Point(893, 91);
+            this.labelz.Name = "labelz";
+            this.labelz.Size = new System.Drawing.Size(0, 20);
+            this.labelz.TabIndex = 8;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1113, 674);
+            this.Controls.Add(this.labelz);
             this.Controls.Add(this.btn_Markers);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -217,6 +227,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button btn_Markers;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private System.Windows.Forms.Label labelz;
     }
 }
 
