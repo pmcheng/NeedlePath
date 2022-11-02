@@ -200,6 +200,7 @@
             this.MinimumSize = new System.Drawing.Size(1135, 730);
             this.Name = "MainForm";
             this.Text = "NeedlePath";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
             this.Shown += new System.EventHandler(this.MainForm_Shown);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
             this.Resize += new System.EventHandler(this.MainForm_Resize);

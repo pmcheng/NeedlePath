@@ -30,6 +30,7 @@ namespace NeedlePath
         int center = 0, width = 0;
         bool leftMouseDown;
         bool showMarkers = true;
+        bool downloaded = false;
 
         double epsilon = 1e-5;
         double start_x = 0, start_y = 0, start_z = 0;
@@ -59,7 +60,7 @@ namespace NeedlePath
 
         private void MainForm_KeyDown(object sender, KeyEventArgs e)
         {
-            if (dcmimage == null) return;
+            if (dcmfile == null) return;
 
             switch (e.KeyCode)
             {
@@ -439,7 +440,7 @@ namespace NeedlePath
 
         private void pb_MouseWheel(object sender, MouseEventArgs e)
         {
-            if (dcmimage == null) return;
+            if (dcmfile == null) return;
             int oldidx = dcmidx;
             if (e.Delta > 0) dcmidx--;
             if (e.Delta < 0) dcmidx++;
@@ -450,7 +451,7 @@ namespace NeedlePath
 
         private void repaint_bg_image()
         {
-            if (dcmimage != null)
+            if (dcmfile != null)
             {
                 if (width > 0)
                 {
@@ -501,7 +502,7 @@ namespace NeedlePath
 
         private void pb_MouseDown(object sender, MouseEventArgs e)
         {
-            if (dcmimage != null)
+            if (dcmfile != null)
             {
                 if (e.Button == MouseButtons.Right)
                 {
@@ -535,6 +536,7 @@ namespace NeedlePath
 
         }
 
+
         private void pb_MouseUp(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right)
@@ -561,6 +563,7 @@ namespace NeedlePath
 
             string tempPath = Path.GetTempPath();
             dcmfiles = new List<string>();
+            downloaded = true;
 
             foreach (dynamic s in result.series)
             {
@@ -610,6 +613,30 @@ namespace NeedlePath
             public string objectUID;
         }
 
+        private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            cleanFiles();
+        }
+
+        private void cleanFiles()
+        {
+            if (downloaded)
+            {
+                foreach (string fn in dcmfiles)
+                {
+                    try
+                    {
+                        File.Delete(fn);
+                    } catch
+                    {
+
+                    }
+                }
+                dcmfile = null;
+                dcmimage = null;
+            }
+        }
+
         private void pb_DragDrop(object sender, DragEventArgs e)
         {
             if (backgroundWorker1.IsBusy) return;
@@ -637,6 +664,9 @@ namespace NeedlePath
                     dObj.studyUID = studyUID;
                     dObj.seriesUID = seriesUID;
                     dObj.objectUID = objectUID;
+
+                    cleanFiles();
+
                     backgroundWorker1.RunWorkerAsync(dObj);
                 }
             }
@@ -652,6 +682,8 @@ namespace NeedlePath
                     List<string> imageFiles = Directory.GetFiles(dcmdir, "*.dcm").ToList<string>();
                     if (imageFiles.Count > 0)
                     {
+                        cleanFiles();
+                        downloaded = false;
                         dcmidx = 0;
                         dcmfiles = imageFiles;
                         load_dicom();
