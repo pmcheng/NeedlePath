@@ -4,11 +4,12 @@ using Synapse5Lib;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using System.Web;
-using System.Linq;
-using System.Drawing.Drawing2D;
+
 
 namespace NeedlePath
 {
@@ -154,8 +155,9 @@ namespace NeedlePath
             return (value < min) ? min : (value > max) ? max : value;
         }
 
-        private void drawLine(Graphics g, double ax, double ay, double az, double bx, double by, double bz, Color c)
+        private void drawLineSegment(Graphics g, double x1, double y1, double z1, double x2, double y2, double z2, Color c)
         {
+            // Draw a line segment depicting intersection of a line from (x1,y1,z1) to (x2,y2,z2) with the plane of the current image
             double x_pos = dcmfile.Dataset.GetValue<double>(DicomTag.ImagePositionPatient, 0);
             double y_pos = dcmfile.Dataset.GetValue<double>(DicomTag.ImagePositionPatient, 1);
             double z_pos = dcmfile.Dataset.GetValue<double>(DicomTag.ImagePositionPatient, 2);
@@ -166,34 +168,34 @@ namespace NeedlePath
             double cols = dcmfile.Dataset.GetValue<int>(DicomTag.Columns, 0);
 
             double form_pix_x = cols * x_pix / pb.Width;
-            double form_pix_y = cols * y_pix / pb.Height;
+            double form_pix_y = rows * y_pix / pb.Height;
             double start, end;
 
-            if ((z_pos > Math.Max(az, bz)) || (z_pos < Math.Min(az, bz))) return;
+            if ((z_pos > Math.Max(z1, z2)) || (z_pos < Math.Min(z1, z2))) return;
 
-            double delta_z = bz - az;
-            if (az == bz)
+            double delta_z = z2 - z1;
+            if (delta_z == 0)
             {
                 start = 0;
                 end = 1;
             }
             else
             {
-                start = Clamp((z_pos - az - z_pix) / delta_z, 0, 1);
-                end = Clamp((z_pos - az + z_pix) / delta_z, 0, 1);
+                start = Clamp((z_pos - z1 - z_pix) / delta_z, 0, 1);
+                end = Clamp((z_pos - z1 + z_pix) / delta_z, 0, 1);
             }
-            double a_x = (ax - x_pos) / form_pix_x;
-            double a_y = (ay - y_pos) / form_pix_y;
-            double b_x = (bx - x_pos) / form_pix_x;
-            double b_y = (by - y_pos) / form_pix_y;
-            Point M = new Point();
-            Point N = new Point();
-            M.X = (int)(a_x + start * (b_x - a_x));
-            M.Y = (int)(a_y + start * (b_y - a_y));
-            N.X = (int)(a_x + end * (b_x - a_x));
-            N.Y = (int)(a_y + end * (b_y - a_y));
+            double x1_pix = (x1 - x_pos) / form_pix_x;
+            double y1_pix = (y1 - y_pos) / form_pix_y;
+            double x2_pix = (x2 - x_pos) / form_pix_x;
+            double y2_pix = (y2 - y_pos) / form_pix_y;
+            Point start_segment = new Point();
+            Point end_segment = new Point();
+            start_segment.X = (int)(x1_pix + start * (x2_pix - x1_pix));
+            start_segment.Y = (int)(y1_pix + start * (y2_pix - y1_pix));
+            end_segment.X = (int)(x1_pix + end * (x2_pix - x1_pix));
+            end_segment.Y = (int)(y1_pix + end * (y2_pix - y1_pix));
             g.SmoothingMode = SmoothingMode.AntiAlias;
-            g.DrawLine(new Pen(c, thick), M, N);
+            g.DrawLine(new Pen(c, thick), start_segment, end_segment);
         }
 
         private double in_plane_print(double angle)
@@ -225,7 +227,7 @@ namespace NeedlePath
             double cols = dcmfile.Dataset.GetValue<int>(DicomTag.Columns, 0);
 
             double form_pix_x = cols * x_pix / pb.Width;
-            double form_pix_y = cols * y_pix / pb.Height;
+            double form_pix_y = rows * y_pix / pb.Height;
             bmp = new Bitmap(pb.Width, pb.Height);
             using (Graphics g = Graphics.FromImage(bmp))
             {
@@ -256,10 +258,11 @@ namespace NeedlePath
                     {
                         if (target_x != 0)
                         {
-                            drawLine(g, start_x, start_y, start_z, target_x, target_y, target_z, Color.Red);
+                            drawLineSegment(g, start_x, start_y, start_z, target_x, target_y, target_z, Color.Red);
                             if (tip_x != 0)
                             {
-                                drawLine(g, tip_x, tip_y, tip_z, target_x, target_y, target_z, Color.LimeGreen);
+                                drawLineSegment(g, start_x, start_y, start_z, tip_x, tip_y, tip_z, Color.Yellow);
+                                drawLineSegment(g, tip_x, tip_y, tip_z, target_x, target_y, target_z, Color.LimeGreen);
                             }
                         }
                     }
