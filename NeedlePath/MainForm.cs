@@ -58,95 +58,96 @@ namespace NeedlePath
             repaint();
         }
 
-        private void MainForm_KeyDown(object sender, KeyEventArgs e)
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
-            if (dcmfile == null) return;
-
-            switch (e.KeyCode)
+            if (dcmfile != null)
             {
-                case Keys.Home:
-                    dcmidx = 0;
-                    load_dicom();
-                    break;
-                case Keys.End:
-                    dcmidx = dcmfiles.Count - 1;
-                    load_dicom();
-                    break;
-                case Keys.Down:
-                    dcmidx += 1;
-                    if (dcmidx >= dcmfiles.Count)
-                    {
-                        dcmidx = dcmfiles.Count - 1;
-                    }
-                    else
-                    {
-                        load_dicom();
-                    }
-                    break;
-                case Keys.Up:
-                    dcmidx -= 1;
-                    if (dcmidx < 0)
-                    {
+                switch (keyData)
+                {
+                    case Keys.Home:
                         dcmidx = 0;
-                    }
-                    else
-                    {
                         load_dicom();
-                    }
-                    break;
-                case Keys.PageDown:
-                    dcmidx += 10;
-                    if (dcmidx >= dcmfiles.Count)
-                    {
+                        return true;
+                    case Keys.End:
                         dcmidx = dcmfiles.Count - 1;
-                    }
-                    load_dicom();
-                    break;
-                case Keys.PageUp:
-                    dcmidx -= 10;
-                    if (dcmidx < 0)
-                    {
-                        dcmidx = 0;
-                    }
-                    load_dicom();
-                    break;
-                case Keys.NumPad0:
-                    center = 400;
-                    width = 2000;
-                    repaint_bg_image();
-                    break;
-                case Keys.NumPad1:
-                    center = 55;
-                    width = 426;
-                    repaint_bg_image();
-                    break;
-                case Keys.NumPad2:
-                    center = -585;
-                    width = 1800;
-                    repaint_bg_image();
-                    break;
-                case Keys.NumPad3:
-                    center = 50;
-                    width = 150;
-                    repaint_bg_image();
-                    break;
-                case Keys.NumPad4:
-                    center = 100;
-                    width = 300;
-                    repaint_bg_image();
-                    break;
-                case Keys.NumPad9:
-                    if (dcmfile!=null)
-                    {
-                        center = dcmfile.Dataset.GetValue<int>(DicomTag.WindowCenter, 0);
-                        width = dcmfile.Dataset.GetValue<int>(DicomTag.WindowWidth, 0);
+                        load_dicom();
+                        return true;
+                    case Keys.Down:
+                        dcmidx += 1;
+                        if (dcmidx >= dcmfiles.Count)
+                        {
+                            dcmidx = dcmfiles.Count - 1;
+                        }
+                        else
+                        {
+                            load_dicom();
+                        }
+                        return true;
+                    case Keys.Up:
+                        dcmidx -= 1;
+                        if (dcmidx < 0)
+                        {
+                            dcmidx = 0;
+                        }
+                        else
+                        {
+                            load_dicom();
+                        }
+                        return true;
+                    case Keys.PageDown:
+                        dcmidx += 10;
+                        if (dcmidx >= dcmfiles.Count)
+                        {
+                            dcmidx = dcmfiles.Count - 1;
+                        }
+                        load_dicom();
+                        return true;
+                    case Keys.PageUp:
+                        dcmidx -= 10;
+                        if (dcmidx < 0)
+                        {
+                            dcmidx = 0;
+                        }
+                        load_dicom();
+                        return true;
+                    case Keys.NumPad0:
+                        center = 400;
+                        width = 2000;
                         repaint_bg_image();
+                        return true;
+                    case Keys.NumPad1:
+                        center = 55;
+                        width = 426;
+                        repaint_bg_image();
+                        return true;
+                    case Keys.NumPad2:
+                        center = -585;
+                        width = 1800;
+                        repaint_bg_image();
+                        return true;
+                    case Keys.NumPad3:
+                        center = 50;
+                        width = 150;
+                        repaint_bg_image();
+                        return true;
+                    case Keys.NumPad4:
+                        center = 100;
+                        width = 300;
+                        repaint_bg_image();
+                        return true;
+                    case Keys.NumPad9:
+                        if (dcmfile != null)
+                        {
+                            center = dcmfile.Dataset.GetValue<int>(DicomTag.WindowCenter, 0);
+                            width = dcmfile.Dataset.GetValue<int>(DicomTag.WindowWidth, 0);
+                            repaint_bg_image();
+                            return true;
+                        }
                         break;
-                    }
-                    break;
+                }
             }
+            return base.ProcessCmdKey(ref msg, keyData);
         }
-
 
         private void set_point(Point p)
         {

@@ -196,13 +196,11 @@
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.pb);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.KeyPreview = true;
             this.MinimumSize = new System.Drawing.Size(1135, 730);
             this.Name = "MainForm";
             this.Text = "NeedlePath";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
             this.Shown += new System.EventHandler(this.MainForm_Shown);
-            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
             this.Resize += new System.EventHandler(this.MainForm_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.pb)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pb_inplane)).EndInit();
