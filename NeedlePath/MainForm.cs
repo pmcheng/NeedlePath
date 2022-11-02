@@ -282,9 +282,9 @@ namespace NeedlePath
                     distance_entry_target = Math.Sqrt((target_x - start_x) * (target_x - start_x) + (target_y - start_y) * (target_y - start_y) + (target_z - start_z) * (target_z - start_z));
                     target_inplane = Math.Atan2(target_y - start_y, target_x - start_x);
                     target_outplane = Math.Asin((target_z - start_z) / (distance_entry_target + epsilon));
-                    textBoxLine($"Entry to target = {distance_entry_target:0} mm");
-                    textBoxLine($"Entry to target in-plane angle = {in_plane_print(target_inplane):0}°");
-                    textBoxLine($"Entry to target out-of-plane angle = {target_outplane * 180 / Math.PI:0}°");
+                    textBoxLine($"Start to target = {distance_entry_target:0} mm");
+                    textBoxLine($"Start to target in-plane angle = {in_plane_print(target_inplane):0}°");
+                    textBoxLine($"Start to target out-of-plane angle = {target_outplane * 180 / Math.PI:0}°");
                     if (tip_x != 0)
                     {
                         distance_entry_tip = Math.Sqrt((tip_x - start_x) * (tip_x - start_x) + (tip_y - start_y) * (tip_y - start_y) + (tip_z - start_z) * (tip_z - start_z));
@@ -293,8 +293,8 @@ namespace NeedlePath
                         distance_tip_target = Math.Sqrt((tip_x - target_x) * (tip_x - target_x) + (tip_y - target_y) * (tip_y - target_y) + (tip_z - target_z) * (tip_z - target_z));
                         textBoxLine("");
                         textBoxLine($"Tip to target = {distance_tip_target:0} mm");
-                        textBoxLine($"Entry to tip in-plane angle = {in_plane_print(tip_inplane):0}°");
-                        textBoxLine($"Entry to tip out-of-plane angle = {tip_outplane * 180 / Math.PI:0}°");
+                        textBoxLine($"Start to tip in-plane angle = {in_plane_print(tip_inplane):0}°");
+                        textBoxLine($"Start to tip out-of-plane angle = {tip_outplane * 180 / Math.PI:0}°");
                         textBoxLine("");
                         textBoxLine($"Correction in-plane angle = {in_plane_difference(target_inplane, tip_inplane):0}°");
                         textBoxLine($"Correction out-of-plane angle = {(target_outplane - tip_outplane) * 180 / Math.PI:0}°");
