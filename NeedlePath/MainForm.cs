@@ -577,6 +577,8 @@ namespace NeedlePath
 
         private void pb_DragDrop(object sender, DragEventArgs e)
         {
+            if (backgroundWorker1.IsBusy) return;
+
             if (e.Data.GetDataPresent("Text"))
             {
                 string datasource = (String)e.Data.GetData("Text");
