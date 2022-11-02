@@ -93,6 +93,22 @@ namespace NeedlePath
                         load_dicom();
                     }
                     break;
+                case Keys.PageDown:
+                    dcmidx += 10;
+                    if (dcmidx >= dcmfiles.Count)
+                    {
+                        dcmidx = dcmfiles.Count - 1;
+                    }
+                    load_dicom();
+                    break;
+                case Keys.PageUp:
+                    dcmidx -= 10;
+                    if (dcmidx < 0)
+                    {
+                        dcmidx = 0;
+                    }
+                    load_dicom();
+                    break;
                 case Keys.NumPad0:
                     center = 400;
                     width = 2000;
