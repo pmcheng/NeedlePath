@@ -8,6 +8,7 @@ using System.IO;
 using System.Windows.Forms;
 using System.Web;
 using System.Linq;
+using System.Drawing.Drawing2D;
 
 namespace NeedlePath
 {
@@ -191,6 +192,7 @@ namespace NeedlePath
             M.Y = (int)(a_y + start * (b_y - a_y));
             N.X = (int)(a_x + end * (b_x - a_x));
             N.Y = (int)(a_y + end * (b_y - a_y));
+            g.SmoothingMode = SmoothingMode.AntiAlias;
             g.DrawLine(new Pen(c, thick), M, N);
         }
 
@@ -212,7 +214,7 @@ namespace NeedlePath
         {
             if (dcmfile == null) return;
             if (this.WindowState == FormWindowState.Minimized) return;
-            
+
             textBox1.Text = "";
             double x_pos = dcmfile.Dataset.GetValue<double>(DicomTag.ImagePositionPatient, 0);
             double y_pos = dcmfile.Dataset.GetValue<double>(DicomTag.ImagePositionPatient, 1);
@@ -304,6 +306,7 @@ namespace NeedlePath
                 bmp = new Bitmap(pb_inplane.Width, pb_inplane.Height);
                 using (Graphics g = Graphics.FromImage(bmp))
                 {
+                    g.SmoothingMode = SmoothingMode.AntiAlias;
                     g.FillRectangle(Brushes.Black, new Rectangle(Point.Empty, bmp.Size));
                     g.DrawLine(new Pen(Color.White, thick), pb_inplane.Width / 2, 0, pb_inplane.Width / 2, pb_inplane.Height);
                     g.DrawLine(new Pen(Color.White, thick), 0, pb_inplane.Height / 2, pb_inplane.Width, pb_inplane.Height / 2);
@@ -328,6 +331,7 @@ namespace NeedlePath
                 bmp = new Bitmap(pb_outplane.Width, pb_outplane.Height);
                 using (Graphics g = Graphics.FromImage(bmp))
                 {
+                    g.SmoothingMode = SmoothingMode.AntiAlias;
                     g.FillRectangle(Brushes.Black, new Rectangle(Point.Empty, bmp.Size));
                     g.DrawLine(new Pen(Color.White, thick), pb_outplane.Width / 2, 0, pb_outplane.Width / 2, pb_outplane.Height / 2);
                     g.DrawLine(new Pen(Color.White, thick), 0, pb_outplane.Height / 2, pb_outplane.Width, pb_outplane.Height / 2);
@@ -429,7 +433,7 @@ namespace NeedlePath
 
                 //double z_pos = dcmfile.Dataset.GetValue<double>(DicomTag.ImagePositionPatient, 2);
                 double sl = dcmfile.Dataset.GetValue<double>(DicomTag.SliceLocation, 0);
-                labelz.Text = $"SL:{sl} ({dcmidx+1}/{dcmfiles.Count})";
+                labelz.Text = $"SL:{sl} ({dcmidx + 1}/{dcmfiles.Count})";
                 //labelz.Text = $"SL:{sl} Z:{z_pos} ({dcmidx + 1}/{dcmfiles.Count})";
             }
         }
@@ -529,17 +533,17 @@ namespace NeedlePath
                 {
                     ProgressObject pObj = new ProgressObject();
                     int total = s.images.Count;
-                    
-                    for (int i=0; i<total; i++)
+
+                    for (int i = 0; i < total; i++)
                     {
                         string imageUID = (string)s.images[i].iuid;
                         string imageFile = Path.Combine(tempPath, imageUID + ".dcm");
                         dcmfiles.Add(imageFile);
                         syn.GetDicom(dObj.studyUID, dObj.seriesUID, imageUID, imageFile);
 
-                        pObj.message = $"Retrieving {i+1} of {total}";
-                        backgroundWorker1.ReportProgress((int) (i*100.0/total), pObj);
-                        
+                        pObj.message = $"Retrieving {i + 1} of {total}";
+                        backgroundWorker1.ReportProgress((int)(i * 100.0 / total), pObj);
+
                         if (imageUID == dObj.objectUID)
                         {
                             dcmidx = dcmfiles.Count - 1;
@@ -605,7 +609,7 @@ namespace NeedlePath
             {
                 string dcmdir = ((string[])data)[0];
                 FileAttributes attr = File.GetAttributes(dcmdir);
-                
+
                 if ((attr & FileAttributes.Directory) == FileAttributes.Directory)
                 {
                     List<string> imageFiles = Directory.GetFiles(dcmdir, "*.dcm").ToList<string>();
