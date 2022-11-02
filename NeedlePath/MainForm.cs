@@ -124,6 +124,25 @@ namespace NeedlePath
                     width = 1800;
                     repaint_bg_image();
                     break;
+                case Keys.NumPad3:
+                    center = 50;
+                    width = 150;
+                    repaint_bg_image();
+                    break;
+                case Keys.NumPad4:
+                    center = 100;
+                    width = 300;
+                    repaint_bg_image();
+                    break;
+                case Keys.NumPad9:
+                    if (dcmfile!=null)
+                    {
+                        center = dcmfile.Dataset.GetValue<int>(DicomTag.WindowCenter, 0);
+                        width = dcmfile.Dataset.GetValue<int>(DicomTag.WindowWidth, 0);
+                        repaint_bg_image();
+                        break;
+                    }
+                    break;
             }
         }
 
@@ -290,28 +309,25 @@ namespace NeedlePath
 
             if (start_x != 0)
             {
-                double distance_entry_target = 0;
                 double target_inplane = 0;
                 double target_outplane = 0;
                 double tip_inplane = 0;
                 double tip_outplane = 0;
-                double distance_entry_tip = 0;
-                double distance_tip_target = 0;
 
                 if (target_x != 0)
                 {
-                    distance_entry_target = Math.Sqrt((target_x - start_x) * (target_x - start_x) + (target_y - start_y) * (target_y - start_y) + (target_z - start_z) * (target_z - start_z));
+                    double distance_start_target = Math.Sqrt((target_x - start_x) * (target_x - start_x) + (target_y - start_y) * (target_y - start_y) + (target_z - start_z) * (target_z - start_z));
                     target_inplane = Math.Atan2(target_y - start_y, target_x - start_x);
-                    target_outplane = Math.Asin((target_z - start_z) / (distance_entry_target + epsilon));
-                    textBoxLine($"Start to target = {distance_entry_target:0} mm");
+                    target_outplane = Math.Asin((target_z - start_z) / (distance_start_target + epsilon));
+                    textBoxLine($"Start to target = {distance_start_target:0} mm");
                     textBoxLine($"Start to target in-plane angle = {in_plane_print(target_inplane):0}°");
                     textBoxLine($"Start to target out-of-plane angle = {target_outplane * 180 / Math.PI:0}°");
                     if (tip_x != 0)
                     {
-                        distance_entry_tip = Math.Sqrt((tip_x - start_x) * (tip_x - start_x) + (tip_y - start_y) * (tip_y - start_y) + (tip_z - start_z) * (tip_z - start_z));
+                        double distance_start_tip = Math.Sqrt((tip_x - start_x) * (tip_x - start_x) + (tip_y - start_y) * (tip_y - start_y) + (tip_z - start_z) * (tip_z - start_z));
                         tip_inplane = Math.Atan2(tip_y - start_y, tip_x - start_x);
-                        tip_outplane = Math.Asin((tip_z - start_z) / (distance_entry_tip + epsilon));
-                        distance_tip_target = Math.Sqrt((tip_x - target_x) * (tip_x - target_x) + (tip_y - target_y) * (tip_y - target_y) + (tip_z - target_z) * (tip_z - target_z));
+                        tip_outplane = Math.Asin((tip_z - start_z) / (distance_start_tip + epsilon));
+                        double distance_tip_target = Math.Sqrt((tip_x - target_x) * (tip_x - target_x) + (tip_y - target_y) * (tip_y - target_y) + (tip_z - target_z) * (tip_z - target_z));
                         textBoxLine("");
                         textBoxLine($"Tip to target = {distance_tip_target:0} mm");
                         textBoxLine($"Start to tip in-plane angle = {in_plane_print(tip_inplane):0}°");
