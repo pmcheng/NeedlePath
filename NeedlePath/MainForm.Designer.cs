@@ -111,7 +111,7 @@
             this.rbTip.Name = "rbTip";
             this.rbTip.Size = new System.Drawing.Size(55, 24);
             this.rbTip.TabIndex = 2;
-            this.rbTip.Text = "Tip";
+            this.rbTip.Text = "Ti&p";
             this.rbTip.UseVisualStyleBackColor = true;
             // 
             // rbTarget
@@ -121,7 +121,7 @@
             this.rbTarget.Name = "rbTarget";
             this.rbTarget.Size = new System.Drawing.Size(80, 24);
             this.rbTarget.TabIndex = 1;
-            this.rbTarget.Text = "Target";
+            this.rbTarget.Text = "&Target";
             this.rbTarget.UseVisualStyleBackColor = true;
             // 
             // rbStart
@@ -133,7 +133,7 @@
             this.rbStart.Size = new System.Drawing.Size(69, 24);
             this.rbStart.TabIndex = 0;
             this.rbStart.TabStop = true;
-            this.rbStart.Text = "Start";
+            this.rbStart.Text = "&Start";
             this.rbStart.UseVisualStyleBackColor = true;
             // 
             // label1

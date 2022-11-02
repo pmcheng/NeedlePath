@@ -144,6 +144,15 @@ namespace NeedlePath
                             return true;
                         }
                         break;
+                    case Keys.S:
+                        rbStart.Checked = true;
+                        return true;
+                    case Keys.T:
+                        rbTarget.Checked = true;
+                        return true;
+                    case Keys.P:
+                        rbTip.Checked = true;
+                        return true;
                 }
             }
             return base.ProcessCmdKey(ref msg, keyData);
