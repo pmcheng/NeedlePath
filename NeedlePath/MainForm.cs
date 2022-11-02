@@ -211,6 +211,8 @@ namespace NeedlePath
         private void repaint()
         {
             if (dcmfile == null) return;
+            if (this.WindowState == FormWindowState.Minimized) return;
+            
             textBox1.Text = "";
             double x_pos = dcmfile.Dataset.GetValue<double>(DicomTag.ImagePositionPatient, 0);
             double y_pos = dcmfile.Dataset.GetValue<double>(DicomTag.ImagePositionPatient, 1);
