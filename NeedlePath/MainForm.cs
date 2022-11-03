@@ -609,7 +609,17 @@ namespace NeedlePath
 
         private void backgroundWorker1_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
         {
-            load_dicom();
+            if (e.Error == null)
+            {
+                load_dicom();
+            }
+            else
+            {
+                textBoxLine("Job not completed successfully.");
+                textBoxLine(e.Error.Message);
+                textBoxLine(e.Error.StackTrace);
+                cleanFiles();
+            }
         }
         class ProgressObject
         {
