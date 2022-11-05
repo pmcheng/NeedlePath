@@ -109,31 +109,37 @@ namespace NeedlePath
                         }
                         load_dicom();
                         return true;
+                    case Keys.D0:
                     case Keys.NumPad0:
                         center = 400;
                         width = 2000;
                         repaint_bg_image();
                         return true;
+                    case Keys.D1:
                     case Keys.NumPad1:
                         center = 55;
                         width = 426;
                         repaint_bg_image();
                         return true;
+                    case Keys.D2:
                     case Keys.NumPad2:
                         center = -585;
                         width = 1800;
                         repaint_bg_image();
                         return true;
+                    case Keys.D3:
                     case Keys.NumPad3:
                         center = 50;
                         width = 150;
                         repaint_bg_image();
                         return true;
+                    case Keys.D4:
                     case Keys.NumPad4:
                         center = 100;
                         width = 300;
                         repaint_bg_image();
                         return true;
+                    case Keys.D9:
                     case Keys.NumPad9:
                         if (dcmfile != null)
                         {
