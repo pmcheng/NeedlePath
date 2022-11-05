@@ -45,7 +45,6 @@ namespace NeedlePath
 
             new DicomSetupBuilder().RegisterServices(s => s.AddFellowOakDicom().AddImageManager<WinFormsImageManager>()).Build();
             pb.MouseWheel += new MouseEventHandler(this.pb_MouseWheel);
-            pb.AllowDrop = true;
             syn = new Synapse5();
 
         }
@@ -446,8 +445,6 @@ namespace NeedlePath
             pb_padding = this.ClientSize.Width - pb.Location.X - pb.Width;
         }
 
-
-
         private void pb_MouseWheel(object sender, MouseEventArgs e)
         {
             if (dcmfile == null) return;
@@ -489,25 +486,6 @@ namespace NeedlePath
             textBox1.Text += line + "\r\n";
             textBox1.SelectionStart = textBox1.TextLength;
             textBox1.ScrollToCaret();
-        }
-
-        private void pictureBox1_DragEnter(object sender, DragEventArgs e)
-        {
-            if (e.Data.GetData("UniformResourceLocator") is MemoryStream ms)
-            {
-                e.Effect = DragDropEffects.Copy;
-                return;
-            }
-            Array data = e.Data.GetData("FileDrop") as Array;
-            if ((data != null) && (data.GetValue(0) is String))
-            {
-                e.Effect = DragDropEffects.Copy;
-                return;
-            }
-            if (e.Data.GetDataPresent("Text"))
-            {
-                e.Effect = DragDropEffects.Copy;
-            }
         }
 
         private void pb_MouseDown(object sender, MouseEventArgs e)
@@ -556,6 +534,81 @@ namespace NeedlePath
             else if (leftMouseDown)
             {
                 leftMouseDown = false;
+            }
+        }
+
+        private void MainForm_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetData("UniformResourceLocator") is MemoryStream ms)
+            {
+                e.Effect = DragDropEffects.Copy;
+                return;
+            }
+            Array data = e.Data.GetData("FileDrop") as Array;
+            if ((data != null) && (data.GetValue(0) is String))
+            {
+                e.Effect = DragDropEffects.Copy;
+                return;
+            }
+            if (e.Data.GetDataPresent("Text"))
+            {
+                e.Effect = DragDropEffects.Copy;
+            }
+        }
+
+        private void MainForm_DragDrop(object sender, DragEventArgs e)
+        {
+            if (backgroundWorker1.IsBusy) return;
+
+            if (e.Data.GetDataPresent("Text"))
+            {
+                string datasource = (String)e.Data.GetData("Text");
+                System.Collections.Specialized.NameValueCollection qscoll = HttpUtility.ParseQueryString(datasource);
+
+                String studyUID = qscoll.Get("studyUID");
+                String seriesUID = qscoll.Get("DDSeriesIUID");
+                if (seriesUID == null)
+                {
+                    seriesUID = qscoll.Get("seriesUID");
+                }
+                String objectUID = qscoll.Get("objectUID");
+                if (objectUID == null)
+                {
+                    objectUID = qscoll.Get("DDFirstSOPInstanceUID");
+                }
+                if ((studyUID != null) && (seriesUID != null) && (objectUID != null))
+                {
+                    DownloadObject dObj = new DownloadObject();
+                    dObj.datasource = datasource;
+                    dObj.studyUID = studyUID;
+                    dObj.seriesUID = seriesUID;
+                    dObj.objectUID = objectUID;
+
+                    cleanFiles();
+
+                    backgroundWorker1.RunWorkerAsync(dObj);
+                }
+            }
+
+            Array data = e.Data.GetData("FileDrop") as Array;
+            if ((data != null) && (data.GetValue(0) is String))
+            {
+                string dcmdir = ((string[])data)[0];
+                FileAttributes attr = File.GetAttributes(dcmdir);
+
+                if ((attr & FileAttributes.Directory) == FileAttributes.Directory)
+                {
+                    List<string> imageFiles = Directory.GetFiles(dcmdir, "*.dcm").ToList<string>();
+                    if (imageFiles.Count > 0)
+                    {
+                        cleanFiles();
+                        downloaded = false;
+                        dcmidx = 0;
+                        dcmfiles = imageFiles;
+                        load_dicom();
+                    }
+                }
+
             }
         }
 
@@ -657,61 +710,5 @@ namespace NeedlePath
             }
         }
 
-        private void pb_DragDrop(object sender, DragEventArgs e)
-        {
-            if (backgroundWorker1.IsBusy) return;
-
-            if (e.Data.GetDataPresent("Text"))
-            {
-                string datasource = (String)e.Data.GetData("Text");
-                System.Collections.Specialized.NameValueCollection qscoll = HttpUtility.ParseQueryString(datasource);
-
-                String studyUID = qscoll.Get("studyUID");
-                String seriesUID = qscoll.Get("DDSeriesIUID");
-                if (seriesUID == null)
-                {
-                    seriesUID = qscoll.Get("seriesUID");
-                }
-                String objectUID = qscoll.Get("objectUID");
-                if (objectUID == null)
-                {
-                    objectUID = qscoll.Get("DDFirstSOPInstanceUID");
-                }
-                if ((studyUID != null) && (seriesUID != null) && (objectUID != null))
-                {
-                    DownloadObject dObj = new DownloadObject();
-                    dObj.datasource = datasource;
-                    dObj.studyUID = studyUID;
-                    dObj.seriesUID = seriesUID;
-                    dObj.objectUID = objectUID;
-
-                    cleanFiles();
-
-                    backgroundWorker1.RunWorkerAsync(dObj);
-                }
-            }
-
-            Array data = e.Data.GetData("FileDrop") as Array;
-            if ((data != null) && (data.GetValue(0) is String))
-            {
-                string dcmdir = ((string[])data)[0];
-                FileAttributes attr = File.GetAttributes(dcmdir);
-
-                if ((attr & FileAttributes.Directory) == FileAttributes.Directory)
-                {
-                    List<string> imageFiles = Directory.GetFiles(dcmdir, "*.dcm").ToList<string>();
-                    if (imageFiles.Count > 0)
-                    {
-                        cleanFiles();
-                        downloaded = false;
-                        dcmidx = 0;
-                        dcmfiles = imageFiles;
-                        load_dicom();
-                    }
-                }
-
-            }
-
-        }
     }
 }

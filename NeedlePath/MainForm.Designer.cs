@@ -57,8 +57,6 @@
             this.pb.Size = new System.Drawing.Size(512, 512);
             this.pb.TabIndex = 0;
             this.pb.TabStop = false;
-            this.pb.DragDrop += new System.Windows.Forms.DragEventHandler(this.pb_DragDrop);
-            this.pb.DragEnter += new System.Windows.Forms.DragEventHandler(this.pictureBox1_DragEnter);
             this.pb.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pb_MouseDown);
             this.pb.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pb_MouseMove);
             this.pb.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pb_MouseUp);
@@ -183,6 +181,7 @@
             // 
             // MainForm
             // 
+            this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1113, 674);
@@ -201,6 +200,8 @@
             this.Text = "NeedlePath";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
             this.Shown += new System.EventHandler(this.MainForm_Shown);
+            this.DragDrop += new System.Windows.Forms.DragEventHandler(this.MainForm_DragDrop);
+            this.DragEnter += new System.Windows.Forms.DragEventHandler(this.MainForm_DragEnter);
             this.Resize += new System.EventHandler(this.MainForm_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.pb)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pb_inplane)).EndInit();
