@@ -567,6 +567,7 @@ namespace NeedlePath
             }
         }
 
+
         private void MainForm_DragDrop(object sender, DragEventArgs e)
         {
             if (backgroundWorker1.IsBusy) return;
