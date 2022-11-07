@@ -45,10 +45,13 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
+            this.labelVersion = new System.Windows.Forms.Label();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             ((System.ComponentModel.ISupportInitialize)(this.pb)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pb_inplane)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pb_outplane)).BeginInit();
             this.groupBox1.SuspendLayout();
+            this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // pb
@@ -139,23 +142,27 @@
             // 
             // label1
             // 
+            this.label1.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(219, 30);
+            this.label1.Location = new System.Drawing.Point(183, 6);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(136, 26);
             this.label1.TabIndex = 5;
             this.label1.Text = "NeedlePath";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label2
             // 
+            this.label2.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.5F);
-            this.label2.Location = new System.Drawing.Point(178, 66);
+            this.label2.Location = new System.Drawing.Point(142, 41);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(219, 24);
             this.label2.TabIndex = 6;
             this.label2.Text = "by Phillip Cheng, MD MS";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // btn_Markers
             // 
@@ -209,19 +216,45 @@
             this.label5.TabIndex = 10;
             this.label5.Text = "out-of-plane angle";
             // 
+            // labelVersion
+            // 
+            this.labelVersion.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.labelVersion.AutoSize = true;
+            this.labelVersion.Location = new System.Drawing.Point(229, 73);
+            this.labelVersion.Name = "labelVersion";
+            this.labelVersion.Size = new System.Drawing.Size(44, 20);
+            this.labelVersion.TabIndex = 11;
+            this.labelVersion.Text = "Build";
+            this.labelVersion.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.ColumnCount = 1;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.labelVersion, 0, 2);
+            this.tableLayoutPanel1.Controls.Add(this.label2, 0, 1);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(36, 4);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 3;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 40F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 30F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 30F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(503, 99);
+            this.tableLayoutPanel1.TabIndex = 12;
+            // 
             // MainForm
             // 
             this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1113, 674);
+            this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.labelz);
             this.Controls.Add(this.btn_Markers);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.pb_outplane);
             this.Controls.Add(this.pb_inplane);
@@ -241,6 +274,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.pb_outplane)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -264,6 +299,8 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label labelVersion;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
     }
 }
 

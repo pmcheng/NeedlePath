@@ -7,6 +7,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Windows.Forms;
 using System.Web;
 
@@ -43,6 +44,14 @@ namespace NeedlePath
         public MainForm()
         {
             InitializeComponent();
+
+            Version v = Assembly.GetExecutingAssembly().GetName().Version;
+            DateTime compileDate = new DateTime(2000, 1, 1).Add(new TimeSpan(v.Build * TimeSpan.TicksPerDay + v.Revision * TimeSpan.TicksPerSecond * 2));
+            if (TimeZone.IsDaylightSavingTime(compileDate, TimeZone.CurrentTimeZone.GetDaylightChanges(compileDate.Year)))
+            {
+                compileDate = compileDate.AddHours(1);
+            }
+            this.labelVersion.Text = $"Build {compileDate}";
 
             new DicomSetupBuilder().RegisterServices(s => s.AddFellowOakDicom().AddImageManager<WinFormsImageManager>()).Build();
             pb.MouseWheel += new MouseEventHandler(this.pb_MouseWheel);
