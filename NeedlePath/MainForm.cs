@@ -606,7 +606,7 @@ namespace NeedlePath
                     dObj.objectUID = objectUID;
 
                     cleanFiles();
-
+                    textBoxLine("Setting up image retrieval...");
                     backgroundWorker1.RunWorkerAsync(dObj);
                 }
             }
