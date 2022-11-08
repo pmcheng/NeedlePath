@@ -315,20 +315,14 @@ namespace NeedlePath
                         g.DrawEllipse(new Pen(Color.Yellow, thick), p.X - radius, p.Y - radius, 2 * radius, 2 * radius);
                     }
 
-                    if (start_x != 0)
+                    if ((start_x != 0) && (target_x != 0)) drawLineSegment(g, start_x, start_y, start_z, target_x, target_y, target_z, Color.Red);
+                    if ((target_x != 0) && (tip_x != 0)) drawLineSegment(g, tip_x, tip_y, tip_z, target_x, target_y, target_z, Color.LimeGreen);
+                    if ((start_x != 0) && (tip_x != 0))
                     {
-                        if (target_x != 0)
-                        {
-                            drawLineSegment(g, start_x, start_y, start_z, target_x, target_y, target_z, Color.Red);
-                            if (tip_x != 0)
-                            {
-                                double extend_x = start_x + (tip_x - start_x) * extend_tip;
-                                double extend_y = start_y + (tip_y - start_y) * extend_tip;
-                                double extend_z = start_z + (tip_z - start_z) * extend_tip;
-                                drawLineSegment(g, start_x, start_y, start_z, extend_x, extend_y, extend_z, Color.Yellow);
-                                drawLineSegment(g, tip_x, tip_y, tip_z, target_x, target_y, target_z, Color.LimeGreen);
-                            }
-                        }
+                        double extend_x = start_x + (tip_x - start_x) * extend_tip;
+                        double extend_y = start_y + (tip_y - start_y) * extend_tip;
+                        double extend_z = start_z + (tip_z - start_z) * extend_tip;
+                        drawLineSegment(g, start_x, start_y, start_z, extend_x, extend_y, extend_z, Color.Yellow);
                     }
                 }
 
@@ -358,7 +352,7 @@ namespace NeedlePath
                         tip_outplane = Math.Asin((tip_z - start_z) / (distance_start_tip + epsilon));
                         double distance_tip_target = Math.Sqrt((tip_x - target_x) * (tip_x - target_x) + (tip_y - target_y) * (tip_y - target_y) + (tip_z - target_z) * (tip_z - target_z));
                         textBoxLine("");
-                        
+
                         textBoxLine($"Start to tip = {distance_start_tip:0} mm");
                         textBoxLine($"Start to tip in-plane angle = {in_plane_print(tip_inplane):0}°, correction = {in_plane_difference(target_inplane, tip_inplane):0}°");
                         textBoxLine($"Start to tip out-of-plane angle = {tip_outplane * 180 / Math.PI:0}°, correction = {(target_outplane - tip_outplane) * 180 / Math.PI:0}°");
@@ -368,57 +362,59 @@ namespace NeedlePath
                     }
                 }
 
-                bmp = new Bitmap(pb_inplane.Width, pb_inplane.Height);
-                using (Graphics g = Graphics.FromImage(bmp))
+                if ((target_x != 0) || (tip_x != 0))
                 {
-                    g.SmoothingMode = SmoothingMode.AntiAlias;
-                    g.FillRectangle(Brushes.Black, new Rectangle(Point.Empty, bmp.Size));
-                    g.DrawLine(new Pen(Color.White, thick), pb_inplane.Width / 2, 0, pb_inplane.Width / 2, pb_inplane.Height);
-                    g.DrawLine(new Pen(Color.White, thick), 0, pb_inplane.Height / 2, pb_inplane.Width, pb_inplane.Height / 2);
-
-                    if (target_x != 0)
+                    bmp = new Bitmap(pb_inplane.Width, pb_inplane.Height);
+                    using (Graphics g = Graphics.FromImage(bmp))
                     {
-                        g.DrawLine(new Pen(Color.Red, thick), pb_inplane.Width / 2, pb_inplane.Height / 2,
-                            (int)(pb_inplane.Width * 0.5 * (1 - Math.Cos(target_inplane))),
-                            (int)(pb_inplane.Height * 0.5 * (1 - Math.Sin(target_inplane))));
+                        g.SmoothingMode = SmoothingMode.AntiAlias;
+                        g.FillRectangle(Brushes.Black, new Rectangle(Point.Empty, bmp.Size));
+                        g.DrawLine(new Pen(Color.White, thick), pb_inplane.Width / 2, 0, pb_inplane.Width / 2, pb_inplane.Height);
+                        g.DrawLine(new Pen(Color.White, thick), 0, pb_inplane.Height / 2, pb_inplane.Width, pb_inplane.Height / 2);
+
+                        if (target_x != 0)
+                        {
+                            g.DrawLine(new Pen(Color.Red, thick), pb_inplane.Width / 2, pb_inplane.Height / 2,
+                                (int)(pb_inplane.Width * 0.5 * (1 - Math.Cos(target_inplane))),
+                                (int)(pb_inplane.Height * 0.5 * (1 - Math.Sin(target_inplane))));
+                        }
+                        if (tip_x != 0)
+                        {
+                            g.DrawLine(new Pen(Color.Yellow, thick), pb_inplane.Width / 2, pb_inplane.Height / 2,
+                                (int)(pb_inplane.Width * 0.5 * (1 - Math.Cos(tip_inplane))),
+                                (int)(pb_inplane.Height * 0.5 * (1 - Math.Sin(tip_inplane))));
+
+                        }
                     }
-                    if (tip_x != 0)
+                    if (pb_inplane.Image != null) pb_inplane.Image.Dispose();
+                    pb_inplane.Image = bmp;
+
+                    bmp = new Bitmap(pb_outplane.Width, pb_outplane.Height);
+                    using (Graphics g = Graphics.FromImage(bmp))
                     {
-                        g.DrawLine(new Pen(Color.Yellow, thick), pb_inplane.Width / 2, pb_inplane.Height / 2,
-                            (int)(pb_inplane.Width * 0.5 * (1 - Math.Cos(tip_inplane))),
-                            (int)(pb_inplane.Height * 0.5 * (1 - Math.Sin(tip_inplane))));
+                        g.SmoothingMode = SmoothingMode.AntiAlias;
+                        g.FillRectangle(Brushes.Black, new Rectangle(Point.Empty, bmp.Size));
+                        g.DrawLine(new Pen(Color.White, thick), pb_outplane.Width / 2, 0, pb_outplane.Width / 2, pb_outplane.Height / 2);
+                        g.DrawLine(new Pen(Color.White, thick), 0, pb_outplane.Height / 2, pb_outplane.Width, pb_outplane.Height / 2);
+
+                        if (target_x != 0)
+                        {
+                            g.DrawLine(new Pen(Color.Red, thick), pb_outplane.Width / 2, pb_outplane.Height / 2,
+                                (int)(pb_outplane.Width * 0.5 * (1 + Math.Sin(target_outplane))),
+                                (int)(pb_outplane.Height * 0.5 * (1 - Math.Cos(target_outplane))));
+                        }
+
+                        if (tip_x != 0)
+                        {
+                            g.DrawLine(new Pen(Color.Yellow, thick), pb_outplane.Width / 2, pb_outplane.Height / 2,
+                                (int)(pb_outplane.Width * 0.5 * (1 + Math.Sin(tip_outplane))),
+                                (int)(pb_outplane.Height * 0.5 * (1 - Math.Cos(tip_outplane))));
+                        }
 
                     }
+                    if (pb_outplane.Image != null) pb_outplane.Image.Dispose();
+                    pb_outplane.Image = bmp;
                 }
-                if (pb_inplane.Image != null) pb_inplane.Image.Dispose();
-                pb_inplane.Image = bmp;
-
-                bmp = new Bitmap(pb_outplane.Width, pb_outplane.Height);
-                using (Graphics g = Graphics.FromImage(bmp))
-                {
-                    g.SmoothingMode = SmoothingMode.AntiAlias;
-                    g.FillRectangle(Brushes.Black, new Rectangle(Point.Empty, bmp.Size));
-                    g.DrawLine(new Pen(Color.White, thick), pb_outplane.Width / 2, 0, pb_outplane.Width / 2, pb_outplane.Height / 2);
-                    g.DrawLine(new Pen(Color.White, thick), 0, pb_outplane.Height / 2, pb_outplane.Width, pb_outplane.Height / 2);
-
-                    if (target_x != 0)
-                    {
-                        g.DrawLine(new Pen(Color.Red, thick), pb_outplane.Width / 2, pb_outplane.Height / 2,
-                            (int)(pb_outplane.Width * 0.5 * (1 + Math.Sin(target_outplane))),
-                            (int)(pb_outplane.Height * 0.5 * (1 - Math.Cos(target_outplane))));
-                    }
-
-                    if (tip_x != 0)
-                    {
-                        g.DrawLine(new Pen(Color.Yellow, thick), pb_outplane.Width / 2, pb_outplane.Height / 2,
-                            (int)(pb_outplane.Width * 0.5 * (1 + Math.Sin(tip_outplane))),
-                            (int)(pb_outplane.Height * 0.5 * (1 - Math.Cos(tip_outplane))));
-                    }
-
-                }
-                if (pb_outplane.Image != null) pb_outplane.Image.Dispose();
-                pb_outplane.Image = bmp;
-
             }
 
         }
@@ -689,7 +685,7 @@ namespace NeedlePath
             }
             else
             {
-                textBoxLine("Job not completed successfully.");
+                textBoxLine("Retrieval not completed successfully.");
                 textBoxLine(e.Error.Message);
                 textBoxLine(e.Error.StackTrace);
                 cleanFiles();
@@ -721,7 +717,8 @@ namespace NeedlePath
                     try
                     {
                         File.Delete(fn);
-                    } catch
+                    }
+                    catch
                     {
 
                     }
