@@ -22,11 +22,15 @@ namespace NeedlePath
         DicomFile dcmfile;
         DicomImage dcmimage;
         Bitmap bmp;
-        const int radius = 5;
-        const int thick = 2;
-        const double x_mouse_scale = 1;
-        const double y_mouse_scale = 1;
-        const double extend_tip = 10;
+        float radius;
+        float thick;
+        const float THICK_NEEDLE = 2;  // thickness of needle in mm
+        const float THICK_MIN = 2; // minimum thickness in pixels
+        const float RADIUS_FACTOR = 2.5F;  // ratio of radius to line thickness
+        const float THICK_ANGLE = 2; //thickness of lines drawn on angle diagrams
+        const double X_MOUSE_SCALE = 1;
+        const double Y_MOUSE_SCALE = 1;
+        const double EXTEND_TIP = 10;
         int anchor_width, anchor_center;
         Point anchor;
         int center = 0, width = 0;
@@ -34,7 +38,7 @@ namespace NeedlePath
         bool showMarkers = true;
         bool downloaded = false;
 
-        double epsilon = 1e-5;
+        const double EPSILON = 1e-5;
         double start_x = 0, start_y = 0, start_z = 0;
         double target_x = 0, target_y = 0, target_z = 0;
         double tip_x = 0, tip_y = 0, tip_z = 0;
@@ -289,6 +293,11 @@ namespace NeedlePath
 
             double form_pix_x = cols * x_pix / pb.Width;
             double form_pix_y = rows * y_pix / pb.Height;
+
+            thick = THICK_NEEDLE / ((float) (form_pix_x + form_pix_y)/2);
+            if (thick < THICK_MIN) thick = THICK_MIN;
+            radius = RADIUS_FACTOR * thick;
+
             bmp = new Bitmap(pb.Width, pb.Height);
             using (Graphics g = Graphics.FromImage(bmp))
             {
@@ -319,9 +328,9 @@ namespace NeedlePath
                     if ((target_x != 0) && (tip_x != 0)) drawLineSegment(g, tip_x, tip_y, tip_z, target_x, target_y, target_z, Color.LimeGreen);
                     if ((start_x != 0) && (tip_x != 0))
                     {
-                        double extend_x = start_x + (tip_x - start_x) * extend_tip;
-                        double extend_y = start_y + (tip_y - start_y) * extend_tip;
-                        double extend_z = start_z + (tip_z - start_z) * extend_tip;
+                        double extend_x = start_x + (tip_x - start_x) * EXTEND_TIP;
+                        double extend_y = start_y + (tip_y - start_y) * EXTEND_TIP;
+                        double extend_z = start_z + (tip_z - start_z) * EXTEND_TIP;
                         drawLineSegment(g, start_x, start_y, start_z, extend_x, extend_y, extend_z, Color.Yellow);
                     }
                 }
@@ -341,7 +350,7 @@ namespace NeedlePath
                 {
                     double distance_start_target = Math.Sqrt((target_x - start_x) * (target_x - start_x) + (target_y - start_y) * (target_y - start_y) + (target_z - start_z) * (target_z - start_z));
                     target_inplane = Math.Atan2(target_y - start_y, target_x - start_x);
-                    target_outplane = Math.Asin((target_z - start_z) / (distance_start_target + epsilon));
+                    target_outplane = Math.Asin((target_z - start_z) / (distance_start_target + EPSILON));
                     textBoxLine($"Start to target = {distance_start_target:0} mm");
                     textBoxLine($"Start to target in-plane angle = {in_plane_print(target_inplane):0}°");
                     textBoxLine($"Start to target out-of-plane angle = {target_outplane * 180 / Math.PI:0}°");
@@ -349,7 +358,7 @@ namespace NeedlePath
                     {
                         double distance_start_tip = Math.Sqrt((tip_x - start_x) * (tip_x - start_x) + (tip_y - start_y) * (tip_y - start_y) + (tip_z - start_z) * (tip_z - start_z));
                         tip_inplane = Math.Atan2(tip_y - start_y, tip_x - start_x);
-                        tip_outplane = Math.Asin((tip_z - start_z) / (distance_start_tip + epsilon));
+                        tip_outplane = Math.Asin((tip_z - start_z) / (distance_start_tip + EPSILON));
                         double distance_tip_target = Math.Sqrt((tip_x - target_x) * (tip_x - target_x) + (tip_y - target_y) * (tip_y - target_y) + (tip_z - target_z) * (tip_z - target_z));
                         textBoxLine("");
 
@@ -369,18 +378,18 @@ namespace NeedlePath
                     {
                         g.SmoothingMode = SmoothingMode.AntiAlias;
                         g.FillRectangle(Brushes.Black, new Rectangle(Point.Empty, bmp.Size));
-                        g.DrawLine(new Pen(Color.White, thick), pb_inplane.Width / 2, 0, pb_inplane.Width / 2, pb_inplane.Height);
-                        g.DrawLine(new Pen(Color.White, thick), 0, pb_inplane.Height / 2, pb_inplane.Width, pb_inplane.Height / 2);
+                        g.DrawLine(new Pen(Color.White, THICK_ANGLE), pb_inplane.Width / 2, 0, pb_inplane.Width / 2, pb_inplane.Height);
+                        g.DrawLine(new Pen(Color.White, THICK_ANGLE), 0, pb_inplane.Height / 2, pb_inplane.Width, pb_inplane.Height / 2);
 
                         if (target_x != 0)
                         {
-                            g.DrawLine(new Pen(Color.Red, thick), pb_inplane.Width / 2, pb_inplane.Height / 2,
+                            g.DrawLine(new Pen(Color.Red, THICK_ANGLE), pb_inplane.Width / 2, pb_inplane.Height / 2,
                                 (int)(pb_inplane.Width * 0.5 * (1 - Math.Cos(target_inplane))),
                                 (int)(pb_inplane.Height * 0.5 * (1 - Math.Sin(target_inplane))));
                         }
                         if (tip_x != 0)
                         {
-                            g.DrawLine(new Pen(Color.Yellow, thick), pb_inplane.Width / 2, pb_inplane.Height / 2,
+                            g.DrawLine(new Pen(Color.Yellow, THICK_ANGLE), pb_inplane.Width / 2, pb_inplane.Height / 2,
                                 (int)(pb_inplane.Width * 0.5 * (1 - Math.Cos(tip_inplane))),
                                 (int)(pb_inplane.Height * 0.5 * (1 - Math.Sin(tip_inplane))));
 
@@ -394,19 +403,19 @@ namespace NeedlePath
                     {
                         g.SmoothingMode = SmoothingMode.AntiAlias;
                         g.FillRectangle(Brushes.Black, new Rectangle(Point.Empty, bmp.Size));
-                        g.DrawLine(new Pen(Color.White, thick), pb_outplane.Width / 2, 0, pb_outplane.Width / 2, pb_outplane.Height / 2);
-                        g.DrawLine(new Pen(Color.White, thick), 0, pb_outplane.Height / 2, pb_outplane.Width, pb_outplane.Height / 2);
+                        g.DrawLine(new Pen(Color.White, THICK_ANGLE), pb_outplane.Width / 2, 0, pb_outplane.Width / 2, pb_outplane.Height / 2);
+                        g.DrawLine(new Pen(Color.White, THICK_ANGLE), 0, pb_outplane.Height / 2, pb_outplane.Width, pb_outplane.Height / 2);
 
                         if (target_x != 0)
                         {
-                            g.DrawLine(new Pen(Color.Red, thick), pb_outplane.Width / 2, pb_outplane.Height / 2,
+                            g.DrawLine(new Pen(Color.Red, THICK_ANGLE), pb_outplane.Width / 2, pb_outplane.Height / 2,
                                 (int)(pb_outplane.Width * 0.5 * (1 + Math.Sin(target_outplane))),
                                 (int)(pb_outplane.Height * 0.5 * (1 - Math.Cos(target_outplane))));
                         }
 
                         if (tip_x != 0)
                         {
-                            g.DrawLine(new Pen(Color.Yellow, thick), pb_outplane.Width / 2, pb_outplane.Height / 2,
+                            g.DrawLine(new Pen(Color.Yellow, THICK_ANGLE), pb_outplane.Width / 2, pb_outplane.Height / 2,
                                 (int)(pb_outplane.Width * 0.5 * (1 + Math.Sin(tip_outplane))),
                                 (int)(pb_outplane.Height * 0.5 * (1 - Math.Cos(tip_outplane))));
                         }
@@ -529,8 +538,8 @@ namespace NeedlePath
             {
                 int dx = e.X - anchor.X;
                 int dy = e.Y - anchor.Y;
-                width = anchor_width - (int)(x_mouse_scale * dx);
-                center = anchor_center + (int)(y_mouse_scale * dy);
+                width = anchor_width - (int)(X_MOUSE_SCALE * dx);
+                center = anchor_center + (int)(Y_MOUSE_SCALE * dy);
                 repaint_bg_image();
             }
             else if (leftMouseDown)
