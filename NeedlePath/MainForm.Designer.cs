@@ -115,7 +115,7 @@
             this.rbTip.Name = "rbTip";
             this.rbTip.Size = new System.Drawing.Size(55, 24);
             this.rbTip.TabIndex = 2;
-            this.rbTip.Text = "Ti&p";
+            this.rbTip.Text = "&Tip";
             this.rbTip.UseVisualStyleBackColor = true;
             // 
             // rbTarget
@@ -125,7 +125,7 @@
             this.rbTarget.Name = "rbTarget";
             this.rbTarget.Size = new System.Drawing.Size(80, 24);
             this.rbTarget.TabIndex = 1;
-            this.rbTarget.Text = "&Target";
+            this.rbTarget.Text = "Ta&rget";
             this.rbTarget.UseVisualStyleBackColor = true;
             // 
             // rbStart

@@ -24,13 +24,13 @@ namespace NeedlePath
         Bitmap bmp;
         float radius;
         float thick;
-        const float THICK_NEEDLE = 2;  // thickness of needle in mm
-        const float THICK_MIN = 2; // minimum thickness in pixels
-        const float RADIUS_FACTOR = 2.5F;  // ratio of radius to line thickness
-        const float THICK_ANGLE = 2; //thickness of lines drawn on angle diagrams
-        const double X_MOUSE_SCALE = 1;
-        const double Y_MOUSE_SCALE = 1;
-        const double EXTEND_TIP = 10;
+        const float THICK_NEEDLE = 2;       // thickness of needle in mm
+        const float THICK_MIN = 2;          // minimum thickness in pixels
+        const float RADIUS_FACTOR = 2.5F;   // ratio of radius to line thickness
+        const float THICK_ANGLE = 2;        // thickness of lines drawn on angle diagrams
+        const double EXTEND_TIP = 10;       // factor to extend needle trajectory
+        const double X_MOUSE_SCALE = 1;     // scaling of width change to mouse movement
+        const double Y_MOUSE_SCALE = 1;     // scaling of center change to mouse movement
         int anchor_width, anchor_center;
         Point anchor;
         int center = 0, width = 0;
@@ -38,7 +38,7 @@ namespace NeedlePath
         bool showMarkers = true;
         bool downloaded = false;
 
-        const double EPSILON = 1e-5;
+        const double EPSILON = 1e-5;        // avoid divide by zero error when distance is zero
         double start_x = 0, start_y = 0, start_z = 0;
         double target_x = 0, target_y = 0, target_z = 0;
         double tip_x = 0, tip_y = 0, tip_z = 0;
@@ -166,11 +166,15 @@ namespace NeedlePath
                     case Keys.S:
                         rbStart.Checked = true;
                         return true;
-                    case Keys.T:
+                    case Keys.R:
                         rbTarget.Checked = true;
                         return true;
-                    case Keys.P:
+                    case Keys.T:
                         rbTip.Checked = true;
+                        return true;
+                    case Keys.A:
+                        toggle_button();
+                        repaint();
                         return true;
                 }
             }
