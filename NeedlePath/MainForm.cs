@@ -263,7 +263,6 @@ namespace NeedlePath
             start_segment.Y = (int)(y1_pix + start * (y2_pix - y1_pix));
             end_segment.X = (int)(x1_pix + end * (x2_pix - x1_pix));
             end_segment.Y = (int)(y1_pix + end * (y2_pix - y1_pix));
-            g.SmoothingMode = SmoothingMode.AntiAlias;
             g.DrawLine(new Pen(c, thick), start_segment, end_segment);
         }
 
@@ -305,6 +304,7 @@ namespace NeedlePath
             bmp = new Bitmap(pb.Width, pb.Height);
             using (Graphics g = Graphics.FromImage(bmp))
             {
+                g.SmoothingMode = SmoothingMode.AntiAlias;
                 g.FillRectangle(Brushes.Transparent, new Rectangle(Point.Empty, bmp.Size));
                 if (showMarkers)
                 {
