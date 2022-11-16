@@ -10,6 +10,7 @@ using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
 using System.Web;
+using System.Collections.ObjectModel;
 
 
 namespace NeedlePath
@@ -22,7 +23,6 @@ namespace NeedlePath
         DicomFile dcmfile;
         DicomImage dcmimage;
         Bitmap bmp;
-        float radius;
         float thick;
         const float THICK_NEEDLE = 2;       // thickness of needle in mm
         const float THICK_MIN = 2;          // minimum thickness in pixels
@@ -299,7 +299,7 @@ namespace NeedlePath
 
             thick = THICK_NEEDLE / ((float) (form_pix_x + form_pix_y)/2);
             if (thick < THICK_MIN) thick = THICK_MIN;
-            radius = RADIUS_FACTOR * thick;
+            float radius = RADIUS_FACTOR * thick;
 
             bmp = new Bitmap(pb.Width, pb.Height);
             using (Graphics g = Graphics.FromImage(bmp))
@@ -358,20 +358,29 @@ namespace NeedlePath
                     textBoxLine($"Start to target = {distance_start_target:0} mm");
                     textBoxLine($"Start to target in-plane angle = {in_plane_print(target_inplane):0}°");
                     textBoxLine($"Start to target out-of-plane angle = {target_outplane * 180 / Math.PI:0}°");
-                    if (tip_x != 0)
+                    textBoxLine("");
+                }
+                if (tip_x != 0) { 
+                    double distance_start_tip = Math.Sqrt((tip_x - start_x) * (tip_x - start_x) + (tip_y - start_y) * (tip_y - start_y) + (tip_z - start_z) * (tip_z - start_z));
+                    tip_inplane = Math.Atan2(tip_y - start_y, tip_x - start_x);
+                    tip_outplane = Math.Asin((tip_z - start_z) / (distance_start_tip + EPSILON));
+                    
+                    
+                    textBoxLine($"Start to tip = {distance_start_tip:0} mm");
+                    
+                    string output_text = $"Start to tip in-plane angle = {in_plane_print(tip_inplane):0}°";
+                    if (target_x != 0) output_text += $", correction = {in_plane_difference(target_inplane, tip_inplane):0}°";
+                    textBoxLine(output_text);
+
+                    output_text = $"Start to tip out-of-plane angle = {tip_outplane * 180 / Math.PI:0}°";
+                    if (target_x != 0) output_text += $", correction = {(target_outplane - tip_outplane) * 180 / Math.PI:0}°";
+                    textBoxLine(output_text);
+                    textBoxLine("");
+
+                    if (target_x != 0)
                     {
-                        double distance_start_tip = Math.Sqrt((tip_x - start_x) * (tip_x - start_x) + (tip_y - start_y) * (tip_y - start_y) + (tip_z - start_z) * (tip_z - start_z));
-                        tip_inplane = Math.Atan2(tip_y - start_y, tip_x - start_x);
-                        tip_outplane = Math.Asin((tip_z - start_z) / (distance_start_tip + EPSILON));
                         double distance_tip_target = Math.Sqrt((tip_x - target_x) * (tip_x - target_x) + (tip_y - target_y) * (tip_y - target_y) + (tip_z - target_z) * (tip_z - target_z));
-                        textBoxLine("");
-
-                        textBoxLine($"Start to tip = {distance_start_tip:0} mm");
-                        textBoxLine($"Start to tip in-plane angle = {in_plane_print(tip_inplane):0}°, correction = {in_plane_difference(target_inplane, tip_inplane):0}°");
-                        textBoxLine($"Start to tip out-of-plane angle = {tip_outplane * 180 / Math.PI:0}°, correction = {(target_outplane - tip_outplane) * 180 / Math.PI:0}°");
-                        textBoxLine("");
                         textBoxLine($"Tip to target = {distance_tip_target:0} mm");
-
                     }
                 }
 
