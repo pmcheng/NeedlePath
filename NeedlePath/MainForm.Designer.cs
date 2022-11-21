@@ -56,7 +56,10 @@
             // 
             // pb
             // 
-            this.pb.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.pb.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pb.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.pb.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pb.Location = new System.Drawing.Point(569, 134);
             this.pb.Name = "pb";

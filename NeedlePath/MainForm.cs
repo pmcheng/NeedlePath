@@ -10,8 +10,7 @@ using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
 using System.Web;
-using System.Collections.ObjectModel;
-using Microsoft.Toolkit.HighPerformance;
+
 
 namespace NeedlePath
 {
@@ -458,29 +457,6 @@ namespace NeedlePath
         {
             toggle_button();
             repaint();
-        }
-
-        private void MainForm_Resize(object sender, EventArgs e)
-        {
-            if (pb_padding == 0) return;
-            int width = this.ClientSize.Width - pb.Location.X - pb_padding;
-            int height = this.ClientSize.Height - pb.Location.Y - pb_padding;
-            if (width > height)
-            {
-                pb.Height = height;
-                pb.Width = height;
-            }
-            else
-            {
-                pb.Height = width;
-                pb.Width = width;
-            }
-            repaint();
-        }
-
-        private void MainForm_Shown(object sender, EventArgs e)
-        {
-            pb_padding = this.ClientSize.Width - pb.Location.X - pb.Width;
         }
 
         private void pb_MouseWheel(object sender, MouseEventArgs e)
