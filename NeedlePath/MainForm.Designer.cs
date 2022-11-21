@@ -30,7 +30,6 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.pb = new System.Windows.Forms.PictureBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
             this.pb_inplane = new System.Windows.Forms.PictureBox();
             this.pb_outplane = new System.Windows.Forms.PictureBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -47,6 +46,7 @@
             this.label5 = new System.Windows.Forms.Label();
             this.labelVersion = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.pb)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pb_inplane)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pb_outplane)).BeginInit();
@@ -66,16 +66,6 @@
             this.pb.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pb_MouseDown);
             this.pb.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pb_MouseMove);
             this.pb.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pb_MouseUp);
-            // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(36, 106);
-            this.textBox1.Multiline = true;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.ReadOnly = true;
-            this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBox1.Size = new System.Drawing.Size(503, 269);
-            this.textBox1.TabIndex = 1;
             // 
             // pb_inplane
             // 
@@ -243,12 +233,25 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(503, 99);
             this.tableLayoutPanel1.TabIndex = 12;
             // 
+            // richTextBox1
+            // 
+            this.richTextBox1.BackColor = System.Drawing.SystemColors.Control;
+            this.richTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.richTextBox1.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.richTextBox1.ForeColor = System.Drawing.Color.White;
+            this.richTextBox1.Location = new System.Drawing.Point(36, 123);
+            this.richTextBox1.Name = "richTextBox1";
+            this.richTextBox1.Size = new System.Drawing.Size(503, 258);
+            this.richTextBox1.TabIndex = 13;
+            this.richTextBox1.Text = "";
+            // 
             // MainForm
             // 
             this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1113, 674);
+            this.Controls.Add(this.richTextBox1);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
@@ -258,7 +261,6 @@
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.pb_outplane);
             this.Controls.Add(this.pb_inplane);
-            this.Controls.Add(this.textBox1);
             this.Controls.Add(this.pb);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(1135, 730);
@@ -284,7 +286,6 @@
         #endregion
 
         private System.Windows.Forms.PictureBox pb;
-        private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.PictureBox pb_inplane;
         private System.Windows.Forms.PictureBox pb_outplane;
         private System.Windows.Forms.GroupBox groupBox1;
@@ -301,6 +302,7 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label labelVersion;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.RichTextBox richTextBox1;
     }
 }
 

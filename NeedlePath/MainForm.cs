@@ -11,7 +11,7 @@ using System.Reflection;
 using System.Windows.Forms;
 using System.Web;
 using System.Collections.ObjectModel;
-
+using Microsoft.Toolkit.HighPerformance;
 
 namespace NeedlePath
 {
@@ -285,7 +285,7 @@ namespace NeedlePath
             if (dcmfile == null) return;
             if (this.WindowState == FormWindowState.Minimized) return;
 
-            textBox1.Text = "";
+            richTextBox1.Text = "";
             double x_pos = dcmfile.Dataset.GetValue<double>(DicomTag.ImagePositionPatient, 0);
             double y_pos = dcmfile.Dataset.GetValue<double>(DicomTag.ImagePositionPatient, 1);
             double z_pos = dcmfile.Dataset.GetValue<double>(DicomTag.ImagePositionPatient, 2);
@@ -355,9 +355,9 @@ namespace NeedlePath
                     double distance_start_target = Math.Sqrt((target_x - start_x) * (target_x - start_x) + (target_y - start_y) * (target_y - start_y) + (target_z - start_z) * (target_z - start_z));
                     target_inplane = Math.Atan2(target_y - start_y, target_x - start_x);
                     target_outplane = Math.Asin((target_z - start_z) / (distance_start_target + EPSILON));
-                    textBoxLine($"Start to target = {distance_start_target:0} mm");
-                    textBoxLine($"Start to target in-plane angle = {in_plane_print(target_inplane):0}°");
-                    textBoxLine($"Start to target out-of-plane angle = {target_outplane * 180 / Math.PI:0}°");
+                    textBoxLine($"Start to target = {distance_start_target:0} mm", Color.Red);
+                    textBoxLine($"Start to target in-plane angle = {in_plane_print(target_inplane):0}°", Color.Red);
+                    textBoxLine($"Start to target out-of-plane angle = {target_outplane * 180 / Math.PI:0}°", Color.Red);
                     textBoxLine("");
                 }
                 if (tip_x != 0) { 
@@ -366,21 +366,21 @@ namespace NeedlePath
                     tip_outplane = Math.Asin((tip_z - start_z) / (distance_start_tip + EPSILON));
                     
                     
-                    textBoxLine($"Start to tip = {distance_start_tip:0} mm");
+                    textBoxLine($"Start to tip = {distance_start_tip:0} mm", Color.Yellow);
                     
                     string output_text = $"Start to tip in-plane angle = {in_plane_print(tip_inplane):0}°";
                     if (target_x != 0) output_text += $", correction = {in_plane_difference(target_inplane, tip_inplane):0}°";
-                    textBoxLine(output_text);
+                    textBoxLine(output_text, Color.Yellow);
 
                     output_text = $"Start to tip out-of-plane angle = {tip_outplane * 180 / Math.PI:0}°";
                     if (target_x != 0) output_text += $", correction = {(target_outplane - tip_outplane) * 180 / Math.PI:0}°";
-                    textBoxLine(output_text);
+                    textBoxLine(output_text, Color.Yellow);
                     textBoxLine("");
 
                     if (target_x != 0)
                     {
                         double distance_tip_target = Math.Sqrt((tip_x - target_x) * (tip_x - target_x) + (tip_y - target_y) * (tip_y - target_y) + (tip_z - target_z) * (tip_z - target_z));
-                        textBoxLine($"Tip to target = {distance_tip_target:0} mm");
+                        textBoxLine($"Tip to target = {distance_tip_target:0} mm", Color.LimeGreen);
                     }
                 }
 
@@ -519,13 +519,18 @@ namespace NeedlePath
             }
         }
 
-        private void textBoxLine(string line)
-        {
-            textBox1.Text += line + "\r\n";
-            textBox1.SelectionStart = textBox1.TextLength;
-            textBox1.ScrollToCaret();
-        }
 
+        private void textBoxLine(string text, Color? color = null)
+        {
+            text += Environment.NewLine;
+            richTextBox1.BackColor = Color.Black;
+            richTextBox1.SelectionColor = color ?? richTextBox1.ForeColor;;
+            richTextBox1.SelectionStart = richTextBox1.TextLength;
+            richTextBox1.AppendText(text);
+            richTextBox1.ScrollToCaret();
+            richTextBox1.SelectionColor = richTextBox1.ForeColor;
+        }
+        
         private void pb_MouseDown(object sender, MouseEventArgs e)
         {
             if (dcmfile != null)
