@@ -189,10 +189,21 @@ namespace NeedlePath
             double rows = dcmfile.Dataset.GetValue<int>(DicomTag.Rows, 0);
             double cols = dcmfile.Dataset.GetValue<int>(DicomTag.Columns, 0);
 
+            int min_dim = 0;
+            if (pb.Width<pb.Height)
+            {
+                p.Y=p.Y - (pb.Height - pb.Width) / 2;
+                min_dim = pb.Width;
+            } else
+            {
+                p.X = p.X - (pb.Width - pb.Height) / 2;
+                min_dim = pb.Height;
+            }
+
             px = dcmfile.Dataset.GetValue<double>(DicomTag.ImagePositionPatient, 0);
-            px += (float)p.X / pb.Width * cols * x_pix;
+            px += (float)p.X / min_dim * cols * x_pix;
             py = dcmfile.Dataset.GetValue<double>(DicomTag.ImagePositionPatient, 1);
-            py += (float)p.Y / pb.Height * rows * y_pix;
+            py += (float)p.Y / min_dim * rows * y_pix;
             pz = dcmfile.Dataset.GetValue<double>(DicomTag.ImagePositionPatient, 2);
 
             if (rbStart.Checked)
@@ -235,8 +246,21 @@ namespace NeedlePath
             double rows = dcmfile.Dataset.GetValue<int>(DicomTag.Rows, 0);
             double cols = dcmfile.Dataset.GetValue<int>(DicomTag.Columns, 0);
 
-            double form_pix_x = cols * x_pix / pb.Width;
-            double form_pix_y = rows * y_pix / pb.Height;
+            int min_dim = 0;
+            int buffer_x = 0, buffer_y = 0;
+            if (pb.Width < pb.Height)
+            {
+                buffer_y = (pb.Height - pb.Width) / 2;
+                min_dim = pb.Width;
+            }
+            else
+            {
+                buffer_x = (pb.Width - pb.Height) / 2;
+                min_dim = pb.Height;
+            }
+            double form_pix_x = cols * x_pix / min_dim;
+            double form_pix_y = rows * y_pix / min_dim;
+
             double start, end;
 
             if ((z_pos > Math.Max(z1, z2)) || (z_pos < Math.Min(z1, z2))) return;
@@ -252,10 +276,10 @@ namespace NeedlePath
                 start = Clamp((z_pos - z1 - z_pix) / delta_z, 0, 1);
                 end = Clamp((z_pos - z1 + z_pix) / delta_z, 0, 1);
             }
-            double x1_pix = (x1 - x_pos) / form_pix_x;
-            double y1_pix = (y1 - y_pos) / form_pix_y;
-            double x2_pix = (x2 - x_pos) / form_pix_x;
-            double y2_pix = (y2 - y_pos) / form_pix_y;
+            double x1_pix = (x1 - x_pos) / form_pix_x + buffer_x;
+            double y1_pix = (y1 - y_pos) / form_pix_y + buffer_y;
+            double x2_pix = (x2 - x_pos) / form_pix_x + buffer_x;
+            double y2_pix = (y2 - y_pos) / form_pix_y + buffer_y;
             Point start_segment = new Point();
             Point end_segment = new Point();
             start_segment.X = (int)(x1_pix + start * (x2_pix - x1_pix));
@@ -293,8 +317,22 @@ namespace NeedlePath
             double rows = dcmfile.Dataset.GetValue<int>(DicomTag.Rows, 0);
             double cols = dcmfile.Dataset.GetValue<int>(DicomTag.Columns, 0);
 
-            double form_pix_x = cols * x_pix / pb.Width;
-            double form_pix_y = rows * y_pix / pb.Height;
+            int min_dim = 0;
+            int buffer_x = 0, buffer_y = 0;
+            if (pb.Width < pb.Height)
+            {
+                buffer_y = (pb.Height - pb.Width) / 2;
+                min_dim = pb.Width;
+            }
+            else
+            {
+                buffer_x = (pb.Width - pb.Height) / 2;
+                min_dim = pb.Height;
+            }
+            double form_pix_x = cols * x_pix / min_dim;
+            double form_pix_y = rows * y_pix / min_dim;
+
+
 
             thick = THICK_NEEDLE / ((float) (form_pix_x + form_pix_y)/2);
             if (thick < THICK_MIN) thick = THICK_MIN;
@@ -310,20 +348,20 @@ namespace NeedlePath
                     Point p = new Point();
                     if (start_z == z_pos)
                     {
-                        p.X = (int)((start_x - x_pos) / form_pix_x);
-                        p.Y = (int)((start_y - y_pos) / form_pix_y);
+                        p.X = (int)((start_x - x_pos) / form_pix_x) + buffer_x;
+                        p.Y = (int)((start_y - y_pos) / form_pix_y) + buffer_y;
                         g.DrawEllipse(new Pen(Color.Red, thick), p.X - radius, p.Y - radius, 2 * radius, 2 * radius);
                     }
                     if (target_z == z_pos)
                     {
-                        p.X = (int)((target_x - x_pos) / form_pix_x);
-                        p.Y = (int)((target_y - y_pos) / form_pix_y);
+                        p.X = (int)((target_x - x_pos) / form_pix_x) + buffer_x;
+                        p.Y = (int)((target_y - y_pos) / form_pix_y) + buffer_y;
                         g.DrawEllipse(new Pen(Color.LimeGreen, thick), p.X - radius, p.Y - radius, 2 * radius, 2 * radius);
                     }
                     if (tip_z == z_pos)
                     {
-                        p.X = (int)((tip_x - x_pos) / form_pix_x);
-                        p.Y = (int)((tip_y - y_pos) / form_pix_y);
+                        p.X = (int)((tip_x - x_pos) / form_pix_x) + buffer_x;
+                        p.Y = (int)((tip_y - y_pos) / form_pix_y) + buffer_y;
                         g.DrawEllipse(new Pen(Color.Yellow, thick), p.X - radius, p.Y - radius, 2 * radius, 2 * radius);
                     }
 
@@ -575,6 +613,10 @@ namespace NeedlePath
             }
         }
 
+        private void MainForm_Resize(object sender, EventArgs e)
+        {
+            repaint();
+        }
 
         private void MainForm_DragDrop(object sender, DragEventArgs e)
         {
