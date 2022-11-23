@@ -42,8 +42,6 @@ namespace NeedlePath
         double target_x = 0, target_y = 0, target_z = 0;
         double tip_x = 0, tip_y = 0, tip_z = 0;
 
-        int pb_padding;
-
         public MainForm()
         {
             InitializeComponent();

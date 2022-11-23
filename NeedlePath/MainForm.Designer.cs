@@ -96,15 +96,15 @@
             this.groupBox1.Controls.Add(this.rbStart);
             this.groupBox1.Location = new System.Drawing.Point(569, 30);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(292, 82);
+            this.groupBox1.Size = new System.Drawing.Size(306, 82);
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Left-Click Selects";
+            this.groupBox1.Text = "Left-click selects";
             // 
             // rbTip
             // 
             this.rbTip.AutoSize = true;
-            this.rbTip.Location = new System.Drawing.Point(212, 34);
+            this.rbTip.Location = new System.Drawing.Point(226, 34);
             this.rbTip.Name = "rbTip";
             this.rbTip.Size = new System.Drawing.Size(55, 24);
             this.rbTip.TabIndex = 2;
@@ -114,7 +114,7 @@
             // rbTarget
             // 
             this.rbTarget.AutoSize = true;
-            this.rbTarget.Location = new System.Drawing.Point(112, 32);
+            this.rbTarget.Location = new System.Drawing.Point(116, 34);
             this.rbTarget.Name = "rbTarget";
             this.rbTarget.Size = new System.Drawing.Size(80, 24);
             this.rbTarget.TabIndex = 1;
@@ -125,7 +125,7 @@
             // 
             this.rbStart.AutoSize = true;
             this.rbStart.Checked = true;
-            this.rbStart.Location = new System.Drawing.Point(22, 32);
+            this.rbStart.Location = new System.Drawing.Point(22, 34);
             this.rbStart.Name = "rbStart";
             this.rbStart.Size = new System.Drawing.Size(69, 24);
             this.rbStart.TabIndex = 0;
@@ -213,11 +213,11 @@
             // 
             this.labelVersion.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.labelVersion.AutoSize = true;
-            this.labelVersion.Location = new System.Drawing.Point(229, 73);
+            this.labelVersion.Location = new System.Drawing.Point(158, 73);
             this.labelVersion.Name = "labelVersion";
-            this.labelVersion.Size = new System.Drawing.Size(44, 20);
+            this.labelVersion.Size = new System.Drawing.Size(187, 20);
             this.labelVersion.TabIndex = 11;
-            this.labelVersion.Text = "Build";
+            this.labelVersion.Text = "Last Build Date and Time";
             this.labelVersion.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // tableLayoutPanel1
@@ -240,7 +240,7 @@
             // 
             this.richTextBox1.BackColor = System.Drawing.SystemColors.Control;
             this.richTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.richTextBox1.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.richTextBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.richTextBox1.ForeColor = System.Drawing.Color.White;
             this.richTextBox1.Location = new System.Drawing.Point(36, 123);
             this.richTextBox1.Name = "richTextBox1";
