@@ -391,8 +391,8 @@ namespace NeedlePath
                     target_inplane = Math.Atan2(target_y - start_y, target_x - start_x);
                     target_outplane = Math.Asin((target_z - start_z) / (distance_start_target + EPSILON));
                     textBoxLine($"Start to target = {distance_start_target:0} mm", Color.Red);
-                    textBoxLine($"Start to target in-plane angle = {in_plane_print(target_inplane):0}°", Color.Red);
-                    textBoxLine($"Start to target out-of-plane angle = {target_outplane * 180 / Math.PI:0}°", Color.Red);
+                    textBoxLine($"In-plane angle = {in_plane_print(target_inplane):0}°", Color.Red);
+                    textBoxLine($"Out-of-plane angle = {target_outplane * 180 / Math.PI:0}°", Color.Red);
                     textBoxLine("");
                 }
                 if (tip_x != 0) { 
@@ -403,11 +403,11 @@ namespace NeedlePath
                     
                     textBoxLine($"Start to tip = {distance_start_tip:0} mm", Color.Yellow);
                     
-                    string output_text = $"Start to tip in-plane angle = {in_plane_print(tip_inplane):0}°";
+                    string output_text = $"In-plane angle = {in_plane_print(tip_inplane):0}°";
                     if (target_x != 0) output_text += $", correction = {in_plane_difference(target_inplane, tip_inplane):0}°";
                     textBoxLine(output_text, Color.Yellow);
 
-                    output_text = $"Start to tip out-of-plane angle = {tip_outplane * 180 / Math.PI:0}°";
+                    output_text = $"Out-of-plane angle = {tip_outplane * 180 / Math.PI:0}°";
                     if (target_x != 0) output_text += $", correction = {(target_outplane - tip_outplane) * 180 / Math.PI:0}°";
                     textBoxLine(output_text, Color.Yellow);
                     textBoxLine("");
@@ -526,7 +526,7 @@ namespace NeedlePath
 
                 //double z_pos = dcmfile.Dataset.GetValue<double>(DicomTag.ImagePositionPatient, 2);
                 double sl = dcmfile.Dataset.GetValue<double>(DicomTag.SliceLocation, 0);
-                labelz.Text = $"SL:{sl} ({dcmidx + 1}/{dcmfiles.Count})";
+                label_zPosition.Text = $"SL:{sl} ({dcmidx + 1}/{dcmfiles.Count})";
                 //labelz.Text = $"SL:{sl} Z:{z_pos} ({dcmidx + 1}/{dcmfiles.Count})";
             }
         }
