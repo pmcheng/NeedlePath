@@ -30,6 +30,11 @@ namespace NeedlePath
         const double EXTEND_TIP = 10;       // factor to extend needle trajectory
         const double X_MOUSE_SCALE = 1;     // scaling of width change to mouse movement
         const double Y_MOUSE_SCALE = 1;     // scaling of center change to mouse movement
+        readonly Color COLOR_START = Color.Red;
+        readonly Color COLOR_TARGET = Color.LimeGreen;
+        readonly Color COLOR_TIP = Color.Yellow;
+
+
         int anchor_width, anchor_center;
         Point anchor;
         int center = 0, width = 0;
@@ -348,29 +353,29 @@ namespace NeedlePath
                     {
                         p.X = (int)((start_x - x_pos) / form_pix_x) + buffer_x;
                         p.Y = (int)((start_y - y_pos) / form_pix_y) + buffer_y;
-                        g.DrawEllipse(new Pen(Color.Red, thick), p.X - radius, p.Y - radius, 2 * radius, 2 * radius);
+                        g.DrawEllipse(new Pen(COLOR_START, thick), p.X - radius, p.Y - radius, 2 * radius, 2 * radius);
                     }
                     if (target_z == z_pos)
                     {
                         p.X = (int)((target_x - x_pos) / form_pix_x) + buffer_x;
                         p.Y = (int)((target_y - y_pos) / form_pix_y) + buffer_y;
-                        g.DrawEllipse(new Pen(Color.LimeGreen, thick), p.X - radius, p.Y - radius, 2 * radius, 2 * radius);
+                        g.DrawEllipse(new Pen(COLOR_TARGET, thick), p.X - radius, p.Y - radius, 2 * radius, 2 * radius);
                     }
                     if (tip_z == z_pos)
                     {
                         p.X = (int)((tip_x - x_pos) / form_pix_x) + buffer_x;
                         p.Y = (int)((tip_y - y_pos) / form_pix_y) + buffer_y;
-                        g.DrawEllipse(new Pen(Color.Yellow, thick), p.X - radius, p.Y - radius, 2 * radius, 2 * radius);
+                        g.DrawEllipse(new Pen(COLOR_TIP, thick), p.X - radius, p.Y - radius, 2 * radius, 2 * radius);
                     }
 
-                    if ((start_x != 0) && (target_x != 0)) drawLineSegment(g, start_x, start_y, start_z, target_x, target_y, target_z, Color.Red);
-                    if ((target_x != 0) && (tip_x != 0)) drawLineSegment(g, tip_x, tip_y, tip_z, target_x, target_y, target_z, Color.LimeGreen);
+                    if ((start_x != 0) && (target_x != 0)) drawLineSegment(g, start_x, start_y, start_z, target_x, target_y, target_z, COLOR_START);
+                    if ((target_x != 0) && (tip_x != 0)) drawLineSegment(g, tip_x, tip_y, tip_z, target_x, target_y, target_z, COLOR_TARGET);
                     if ((start_x != 0) && (tip_x != 0))
                     {
                         double extend_x = start_x + (tip_x - start_x) * EXTEND_TIP;
                         double extend_y = start_y + (tip_y - start_y) * EXTEND_TIP;
                         double extend_z = start_z + (tip_z - start_z) * EXTEND_TIP;
-                        drawLineSegment(g, start_x, start_y, start_z, extend_x, extend_y, extend_z, Color.Yellow);
+                        drawLineSegment(g, start_x, start_y, start_z, extend_x, extend_y, extend_z, COLOR_TIP);
                     }
                 }
 
@@ -390,9 +395,9 @@ namespace NeedlePath
                     double distance_start_target = Math.Sqrt((target_x - start_x) * (target_x - start_x) + (target_y - start_y) * (target_y - start_y) + (target_z - start_z) * (target_z - start_z));
                     target_inplane = Math.Atan2(target_y - start_y, target_x - start_x);
                     target_outplane = Math.Asin((target_z - start_z) / (distance_start_target + EPSILON));
-                    textBoxLine($"Start to target = {distance_start_target:0} mm", Color.Red);
-                    textBoxLine($"In-plane angle = {in_plane_print(target_inplane):0}°", Color.Red);
-                    textBoxLine($"Out-of-plane angle = {target_outplane * 180 / Math.PI:0}°", Color.Red);
+                    textBoxLine($"Start to target = {distance_start_target:0} mm", COLOR_START);
+                    textBoxLine($"In-plane angle = {in_plane_print(target_inplane):0}°", COLOR_START);
+                    textBoxLine($"Out-of-plane angle = {target_outplane * 180 / Math.PI:0}°", COLOR_START);
                     textBoxLine("");
                 }
                 if (tip_x != 0) { 
@@ -401,21 +406,21 @@ namespace NeedlePath
                     tip_outplane = Math.Asin((tip_z - start_z) / (distance_start_tip + EPSILON));
                     
                     
-                    textBoxLine($"Start to tip = {distance_start_tip:0} mm", Color.Yellow);
+                    textBoxLine($"Start to tip = {distance_start_tip:0} mm", COLOR_TIP);
                     
                     string output_text = $"In-plane angle = {in_plane_print(tip_inplane):0}°";
                     if (target_x != 0) output_text += $", correction = {in_plane_difference(target_inplane, tip_inplane):0}°";
-                    textBoxLine(output_text, Color.Yellow);
+                    textBoxLine(output_text, COLOR_TIP);
 
                     output_text = $"Out-of-plane angle = {tip_outplane * 180 / Math.PI:0}°";
                     if (target_x != 0) output_text += $", correction = {(target_outplane - tip_outplane) * 180 / Math.PI:0}°";
-                    textBoxLine(output_text, Color.Yellow);
+                    textBoxLine(output_text, COLOR_TIP);
                     textBoxLine("");
 
                     if (target_x != 0)
                     {
                         double distance_tip_target = Math.Sqrt((tip_x - target_x) * (tip_x - target_x) + (tip_y - target_y) * (tip_y - target_y) + (tip_z - target_z) * (tip_z - target_z));
-                        textBoxLine($"Tip to target = {distance_tip_target:0} mm", Color.LimeGreen);
+                        textBoxLine($"Tip to target = {distance_tip_target:0} mm", COLOR_TARGET);
                     }
                 }
 
@@ -431,13 +436,13 @@ namespace NeedlePath
 
                         if (target_x != 0)
                         {
-                            g.DrawLine(new Pen(Color.Red, THICK_ANGLE), pb_inplane.Width / 2, pb_inplane.Height / 2,
+                            g.DrawLine(new Pen(COLOR_START, THICK_ANGLE), pb_inplane.Width / 2, pb_inplane.Height / 2,
                                 (int)(pb_inplane.Width * 0.5 * (1 - Math.Cos(target_inplane))),
                                 (int)(pb_inplane.Height * 0.5 * (1 - Math.Sin(target_inplane))));
                         }
                         if (tip_x != 0)
                         {
-                            g.DrawLine(new Pen(Color.Yellow, THICK_ANGLE), pb_inplane.Width / 2, pb_inplane.Height / 2,
+                            g.DrawLine(new Pen(COLOR_TIP, THICK_ANGLE), pb_inplane.Width / 2, pb_inplane.Height / 2,
                                 (int)(pb_inplane.Width * 0.5 * (1 - Math.Cos(tip_inplane))),
                                 (int)(pb_inplane.Height * 0.5 * (1 - Math.Sin(tip_inplane))));
 
@@ -456,14 +461,14 @@ namespace NeedlePath
 
                         if (target_x != 0)
                         {
-                            g.DrawLine(new Pen(Color.Red, THICK_ANGLE), pb_outplane.Width / 2, pb_outplane.Height / 2,
+                            g.DrawLine(new Pen(COLOR_START, THICK_ANGLE), pb_outplane.Width / 2, pb_outplane.Height / 2,
                                 (int)(pb_outplane.Width * 0.5 * (1 + Math.Sin(target_outplane))),
                                 (int)(pb_outplane.Height * 0.5 * (1 - Math.Cos(target_outplane))));
                         }
 
                         if (tip_x != 0)
                         {
-                            g.DrawLine(new Pen(Color.Yellow, THICK_ANGLE), pb_outplane.Width / 2, pb_outplane.Height / 2,
+                            g.DrawLine(new Pen(COLOR_TIP, THICK_ANGLE), pb_outplane.Width / 2, pb_outplane.Height / 2,
                                 (int)(pb_outplane.Width * 0.5 * (1 + Math.Sin(tip_outplane))),
                                 (int)(pb_outplane.Height * 0.5 * (1 - Math.Cos(tip_outplane))));
                         }
