@@ -41,7 +41,6 @@
             this.btn_Markers = new System.Windows.Forms.Button();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.labelz = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.labelVersion = new System.Windows.Forms.Label();
@@ -61,9 +60,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pb.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.pb.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pb.Location = new System.Drawing.Point(569, 134);
+            this.pb.Location = new System.Drawing.Point(349, 52);
             this.pb.Name = "pb";
-            this.pb.Size = new System.Drawing.Size(512, 512);
+            this.pb.Size = new System.Drawing.Size(400, 400);
             this.pb.TabIndex = 0;
             this.pb.TabStop = false;
             this.pb.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pb_MouseDown);
@@ -73,9 +72,9 @@
             // pb_inplane
             // 
             this.pb_inplane.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pb_inplane.Location = new System.Drawing.Point(36, 401);
+            this.pb_inplane.Location = new System.Drawing.Point(9, 272);
             this.pb_inplane.Name = "pb_inplane";
-            this.pb_inplane.Size = new System.Drawing.Size(240, 240);
+            this.pb_inplane.Size = new System.Drawing.Size(160, 160);
             this.pb_inplane.TabIndex = 2;
             this.pb_inplane.TabStop = false;
             // 
@@ -83,9 +82,9 @@
             // 
             this.pb_outplane.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.pb_outplane.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pb_outplane.Location = new System.Drawing.Point(299, 401);
+            this.pb_outplane.Location = new System.Drawing.Point(175, 272);
             this.pb_outplane.Name = "pb_outplane";
-            this.pb_outplane.Size = new System.Drawing.Size(240, 240);
+            this.pb_outplane.Size = new System.Drawing.Size(160, 160);
             this.pb_outplane.TabIndex = 3;
             this.pb_outplane.TabStop = false;
             // 
@@ -94,9 +93,9 @@
             this.groupBox1.Controls.Add(this.rbTip);
             this.groupBox1.Controls.Add(this.rbTarget);
             this.groupBox1.Controls.Add(this.rbStart);
-            this.groupBox1.Location = new System.Drawing.Point(569, 30);
+            this.groupBox1.Location = new System.Drawing.Point(351, 6);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(306, 82);
+            this.groupBox1.Size = new System.Drawing.Size(236, 43);
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Left-click selects";
@@ -104,9 +103,9 @@
             // rbTip
             // 
             this.rbTip.AutoSize = true;
-            this.rbTip.Location = new System.Drawing.Point(226, 34);
+            this.rbTip.Location = new System.Drawing.Point(185, 19);
             this.rbTip.Name = "rbTip";
-            this.rbTip.Size = new System.Drawing.Size(55, 24);
+            this.rbTip.Size = new System.Drawing.Size(40, 17);
             this.rbTip.TabIndex = 2;
             this.rbTip.Text = "&Tip";
             this.rbTip.UseVisualStyleBackColor = true;
@@ -114,9 +113,9 @@
             // rbTarget
             // 
             this.rbTarget.AutoSize = true;
-            this.rbTarget.Location = new System.Drawing.Point(116, 34);
+            this.rbTarget.Location = new System.Drawing.Point(97, 19);
             this.rbTarget.Name = "rbTarget";
-            this.rbTarget.Size = new System.Drawing.Size(80, 24);
+            this.rbTarget.Size = new System.Drawing.Size(56, 17);
             this.rbTarget.TabIndex = 1;
             this.rbTarget.Text = "Ta&rget";
             this.rbTarget.UseVisualStyleBackColor = true;
@@ -125,9 +124,9 @@
             // 
             this.rbStart.AutoSize = true;
             this.rbStart.Checked = true;
-            this.rbStart.Location = new System.Drawing.Point(22, 34);
+            this.rbStart.Location = new System.Drawing.Point(22, 19);
             this.rbStart.Name = "rbStart";
-            this.rbStart.Size = new System.Drawing.Size(69, 24);
+            this.rbStart.Size = new System.Drawing.Size(47, 17);
             this.rbStart.TabIndex = 0;
             this.rbStart.TabStop = true;
             this.rbStart.Text = "&Start";
@@ -138,9 +137,9 @@
             this.label1.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(183, 6);
+            this.label1.Location = new System.Drawing.Point(116, 2);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(136, 26);
+            this.label1.Size = new System.Drawing.Size(94, 18);
             this.label1.TabIndex = 5;
             this.label1.Text = "NeedlePath";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -150,18 +149,18 @@
             this.label2.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.5F);
-            this.label2.Location = new System.Drawing.Point(142, 41);
+            this.label2.Location = new System.Drawing.Point(86, 23);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(219, 24);
+            this.label2.Size = new System.Drawing.Size(153, 16);
             this.label2.TabIndex = 6;
             this.label2.Text = "by Phillip Cheng, MD MS";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // btn_Markers
             // 
-            this.btn_Markers.Location = new System.Drawing.Point(893, 34);
+            this.btn_Markers.Location = new System.Drawing.Point(594, 4);
             this.btn_Markers.Name = "btn_Markers";
-            this.btn_Markers.Size = new System.Drawing.Size(188, 37);
+            this.btn_Markers.Size = new System.Drawing.Size(155, 25);
             this.btn_Markers.TabIndex = 7;
             this.btn_Markers.Text = "Hide Markers";
             this.btn_Markers.UseVisualStyleBackColor = true;
@@ -177,35 +176,26 @@
             // labelz
             // 
             this.labelz.AutoSize = true;
-            this.labelz.Location = new System.Drawing.Point(893, 91);
+            this.labelz.Location = new System.Drawing.Point(599, 33);
             this.labelz.Name = "labelz";
-            this.labelz.Size = new System.Drawing.Size(0, 20);
+            this.labelz.Size = new System.Drawing.Size(0, 13);
             this.labelz.TabIndex = 8;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(132, 649);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(51, 20);
-            this.label3.TabIndex = 9;
-            this.label3.Text = "label3";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(102, 649);
+            this.label4.Location = new System.Drawing.Point(53, 437);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(108, 20);
+            this.label4.Size = new System.Drawing.Size(73, 13);
             this.label4.TabIndex = 9;
             this.label4.Text = "in-plane angle";
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(350, 649);
+            this.label5.Location = new System.Drawing.Point(209, 437);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(138, 20);
+            this.label5.Size = new System.Drawing.Size(92, 13);
             this.label5.TabIndex = 10;
             this.label5.Text = "out-of-plane angle";
             // 
@@ -213,9 +203,9 @@
             // 
             this.labelVersion.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.labelVersion.AutoSize = true;
-            this.labelVersion.Location = new System.Drawing.Point(158, 73);
+            this.labelVersion.Location = new System.Drawing.Point(100, 42);
             this.labelVersion.Name = "labelVersion";
-            this.labelVersion.Size = new System.Drawing.Size(187, 20);
+            this.labelVersion.Size = new System.Drawing.Size(126, 13);
             this.labelVersion.TabIndex = 11;
             this.labelVersion.Text = "Last Build Date and Time";
             this.labelVersion.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -227,13 +217,13 @@
             this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.labelVersion, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.label2, 0, 1);
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(36, 4);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(9, 4);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 3;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 40F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 30F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 30F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(503, 99);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(326, 58);
             this.tableLayoutPanel1.TabIndex = 12;
             // 
             // richTextBox1
@@ -242,23 +232,22 @@
             this.richTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.richTextBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.richTextBox1.ForeColor = System.Drawing.Color.White;
-            this.richTextBox1.Location = new System.Drawing.Point(36, 123);
+            this.richTextBox1.Location = new System.Drawing.Point(9, 68);
             this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(503, 258);
+            this.richTextBox1.Size = new System.Drawing.Size(326, 197);
             this.richTextBox1.TabIndex = 13;
             this.richTextBox1.Text = "";
             // 
             // MainForm
             // 
             this.AllowDrop = true;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1113, 674);
+            this.ClientSize = new System.Drawing.Size(761, 461);
             this.Controls.Add(this.richTextBox1);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.label3);
             this.Controls.Add(this.labelz);
             this.Controls.Add(this.btn_Markers);
             this.Controls.Add(this.groupBox1);
@@ -266,7 +255,7 @@
             this.Controls.Add(this.pb_inplane);
             this.Controls.Add(this.pb);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MinimumSize = new System.Drawing.Size(1135, 730);
+            this.MinimumSize = new System.Drawing.Size(777, 500);
             this.Name = "MainForm";
             this.Text = "NeedlePath";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
@@ -299,7 +288,6 @@
         private System.Windows.Forms.Button btn_Markers;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private System.Windows.Forms.Label labelz;
-        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label labelVersion;
