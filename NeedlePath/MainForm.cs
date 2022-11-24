@@ -30,8 +30,8 @@ namespace NeedlePath
         const double EXTEND_TIP = 10;       // factor to extend needle trajectory
         const double X_MOUSE_SCALE = 1;     // scaling of width change to mouse movement
         const double Y_MOUSE_SCALE = 1;     // scaling of center change to mouse movement
-        readonly Color COLOR_START = Color.Red;
-        readonly Color COLOR_TARGET = Color.LimeGreen;
+        readonly Color COLOR_START = Color.Magenta;
+        readonly Color COLOR_TARGET = Color.Lime;
         readonly Color COLOR_TIP = Color.Yellow;
 
 
@@ -67,10 +67,17 @@ namespace NeedlePath
 
         private void load_dicom()
         {
-            dcmfile = DicomFile.Open(dcmfiles[dcmidx]);
-            dcmimage = new DicomImage(dcmfile.Dataset);
-            repaint_bg_image();
-            repaint();
+            try
+            {
+                dcmfile = DicomFile.Open(dcmfiles[dcmidx]);
+                dcmimage = new DicomImage(dcmfile.Dataset);
+                repaint_bg_image();
+                repaint();
+            }
+            catch (Exception e)
+            {
+                textBoxLine(e.Message);
+            }
         }
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
@@ -159,8 +166,8 @@ namespace NeedlePath
                     case Keys.NumPad9:
                         if (dcmfile != null)
                         {
-                            center = dcmfile.Dataset.GetValue<int>(DicomTag.WindowCenter, 0);
-                            width = dcmfile.Dataset.GetValue<int>(DicomTag.WindowWidth, 0);
+                            center = dcmfile.Dataset.GetValueOrDefault<int>(DicomTag.WindowCenter, 0, center);
+                            width = dcmfile.Dataset.GetValueOrDefault<int>(DicomTag.WindowWidth, 0, width);
                             repaint_bg_image();
                             return true;
                         }
@@ -185,29 +192,38 @@ namespace NeedlePath
 
         private void set_point(Point p)
         {
-            double px, py, pz;
+            double px, py, pz, x_pix, y_pix, rows, cols;
 
-            double x_pix = dcmfile.Dataset.GetValue<double>(DicomTag.PixelSpacing, 0);
-            double y_pix = dcmfile.Dataset.GetValue<double>(DicomTag.PixelSpacing, 1);
-            double rows = dcmfile.Dataset.GetValue<int>(DicomTag.Rows, 0);
-            double cols = dcmfile.Dataset.GetValue<int>(DicomTag.Columns, 0);
+            try
+            {
+                x_pix = dcmfile.Dataset.GetValue<double>(DicomTag.PixelSpacing, 0);
+                y_pix = dcmfile.Dataset.GetValue<double>(DicomTag.PixelSpacing, 1);
+                rows = dcmfile.Dataset.GetValue<int>(DicomTag.Rows, 0);
+                cols = dcmfile.Dataset.GetValue<int>(DicomTag.Columns, 0);
+                px = dcmfile.Dataset.GetValue<double>(DicomTag.ImagePositionPatient, 0);
+                py = dcmfile.Dataset.GetValue<double>(DicomTag.ImagePositionPatient, 1);
+                pz = dcmfile.Dataset.GetValue<double>(DicomTag.ImagePositionPatient, 2);
+            }
+            catch (Exception e)
+            {
+                textBoxLine(e.Message);
+                return;
+            }
 
             int min_dim = 0;
-            if (pb.Width<pb.Height)
+            if (pb.Width < pb.Height)
             {
-                p.Y=p.Y - (pb.Height - pb.Width) / 2;
+                p.Y = p.Y - (pb.Height - pb.Width) / 2;
                 min_dim = pb.Width;
-            } else
+            }
+            else
             {
                 p.X = p.X - (pb.Width - pb.Height) / 2;
                 min_dim = pb.Height;
             }
 
-            px = dcmfile.Dataset.GetValue<double>(DicomTag.ImagePositionPatient, 0);
             px += (float)p.X / min_dim * cols * x_pix;
-            py = dcmfile.Dataset.GetValue<double>(DicomTag.ImagePositionPatient, 1);
             py += (float)p.Y / min_dim * rows * y_pix;
-            pz = dcmfile.Dataset.GetValue<double>(DicomTag.ImagePositionPatient, 2);
 
             if (rbStart.Checked)
             {
@@ -240,14 +256,23 @@ namespace NeedlePath
         private void drawLineSegment(Graphics g, double x1, double y1, double z1, double x2, double y2, double z2, Color c)
         {
             // Draw a line segment depicting intersection of a line from (x1,y1,z1) to (x2,y2,z2) with the plane of the current image
-            double x_pos = dcmfile.Dataset.GetValue<double>(DicomTag.ImagePositionPatient, 0);
-            double y_pos = dcmfile.Dataset.GetValue<double>(DicomTag.ImagePositionPatient, 1);
-            double z_pos = dcmfile.Dataset.GetValue<double>(DicomTag.ImagePositionPatient, 2);
-            double x_pix = dcmfile.Dataset.GetValue<double>(DicomTag.PixelSpacing, 0);
-            double y_pix = dcmfile.Dataset.GetValue<double>(DicomTag.PixelSpacing, 1);
-            double z_pix = dcmfile.Dataset.GetValue<double>(DicomTag.SliceThickness, 0);
-            double rows = dcmfile.Dataset.GetValue<int>(DicomTag.Rows, 0);
-            double cols = dcmfile.Dataset.GetValue<int>(DicomTag.Columns, 0);
+            double x_pos, y_pos, z_pos, x_pix, y_pix, z_pix, rows, cols;
+            try
+            {
+                x_pos = dcmfile.Dataset.GetValue<double>(DicomTag.ImagePositionPatient, 0);
+                y_pos = dcmfile.Dataset.GetValue<double>(DicomTag.ImagePositionPatient, 1);
+                z_pos = dcmfile.Dataset.GetValue<double>(DicomTag.ImagePositionPatient, 2);
+                x_pix = dcmfile.Dataset.GetValue<double>(DicomTag.PixelSpacing, 0);
+                y_pix = dcmfile.Dataset.GetValue<double>(DicomTag.PixelSpacing, 1);
+                z_pix = dcmfile.Dataset.GetValue<double>(DicomTag.SliceThickness, 0);
+                rows = dcmfile.Dataset.GetValue<int>(DicomTag.Rows, 0);
+                cols = dcmfile.Dataset.GetValue<int>(DicomTag.Columns, 0);
+            }
+            catch (Exception e)
+            {
+                textBoxLine(e.Message);
+                return;
+            }
 
             int min_dim = 0;
             int buffer_x = 0, buffer_y = 0;
@@ -310,15 +335,25 @@ namespace NeedlePath
         {
             if (dcmfile == null) return;
             if (this.WindowState == FormWindowState.Minimized) return;
-
             richTextBox1.Text = "";
-            double x_pos = dcmfile.Dataset.GetValue<double>(DicomTag.ImagePositionPatient, 0);
-            double y_pos = dcmfile.Dataset.GetValue<double>(DicomTag.ImagePositionPatient, 1);
-            double z_pos = dcmfile.Dataset.GetValue<double>(DicomTag.ImagePositionPatient, 2);
-            double x_pix = dcmfile.Dataset.GetValue<double>(DicomTag.PixelSpacing, 0);
-            double y_pix = dcmfile.Dataset.GetValue<double>(DicomTag.PixelSpacing, 1);
-            double rows = dcmfile.Dataset.GetValue<int>(DicomTag.Rows, 0);
-            double cols = dcmfile.Dataset.GetValue<int>(DicomTag.Columns, 0);
+
+            double x_pos, y_pos, z_pos, x_pix, y_pix, rows, cols;
+
+            try
+            {
+                x_pos = dcmfile.Dataset.GetValue<double>(DicomTag.ImagePositionPatient, 0);
+                y_pos = dcmfile.Dataset.GetValue<double>(DicomTag.ImagePositionPatient, 1);
+                z_pos = dcmfile.Dataset.GetValue<double>(DicomTag.ImagePositionPatient, 2);
+                x_pix = dcmfile.Dataset.GetValue<double>(DicomTag.PixelSpacing, 0);
+                y_pix = dcmfile.Dataset.GetValue<double>(DicomTag.PixelSpacing, 1);
+                rows = dcmfile.Dataset.GetValue<int>(DicomTag.Rows, 0);
+                cols = dcmfile.Dataset.GetValue<int>(DicomTag.Columns, 0);
+            }
+            catch (Exception e)
+            {
+                textBoxLine(e.Message);
+                return;
+            }
 
             int min_dim = 0;
             int buffer_x = 0, buffer_y = 0;
@@ -337,7 +372,7 @@ namespace NeedlePath
 
 
 
-            thick = THICK_NEEDLE / ((float) (form_pix_x + form_pix_y)/2);
+            thick = THICK_NEEDLE / ((float)(form_pix_x + form_pix_y) / 2);
             if (thick < THICK_MIN) thick = THICK_MIN;
             float radius = RADIUS_FACTOR * thick;
 
@@ -400,14 +435,15 @@ namespace NeedlePath
                     textBoxLine($"Out-of-plane angle = {target_outplane * 180 / Math.PI:0}°", COLOR_START);
                     textBoxLine("");
                 }
-                if (tip_x != 0) { 
+                if (tip_x != 0)
+                {
                     double distance_start_tip = Math.Sqrt((tip_x - start_x) * (tip_x - start_x) + (tip_y - start_y) * (tip_y - start_y) + (tip_z - start_z) * (tip_z - start_z));
                     tip_inplane = Math.Atan2(tip_y - start_y, tip_x - start_x);
                     tip_outplane = Math.Asin((tip_z - start_z) / (distance_start_tip + EPSILON));
-                    
-                    
+
+
                     textBoxLine($"Start to tip = {distance_start_tip:0} mm", COLOR_TIP);
-                    
+
                     string output_text = $"In-plane angle = {in_plane_print(tip_inplane):0}°";
                     if (target_x != 0) output_text += $", correction = {in_plane_difference(target_inplane, tip_inplane):0}°";
                     textBoxLine(output_text, COLOR_TIP);
@@ -529,10 +565,17 @@ namespace NeedlePath
                 if (pb.BackgroundImage != null) pb.BackgroundImage.Dispose();
                 pb.BackgroundImage = bmp;
 
-                //double z_pos = dcmfile.Dataset.GetValue<double>(DicomTag.ImagePositionPatient, 2);
-                double sl = dcmfile.Dataset.GetValue<double>(DicomTag.SliceLocation, 0);
-                label_zPosition.Text = $"SL:{sl} ({dcmidx + 1}/{dcmfiles.Count})";
-                //labelz.Text = $"SL:{sl} Z:{z_pos} ({dcmidx + 1}/{dcmfiles.Count})";
+
+                try
+                {
+                    //double z_pos = dcmfile.Dataset.GetValue<double>(DicomTag.ImagePositionPatient, 2);
+                    //labelz.Text = $"SL:{sl} Z:{z_pos} ({dcmidx + 1}/{dcmfiles.Count})";
+                    double sl = dcmfile.Dataset.GetValue<double>(DicomTag.SliceLocation, 0);
+                    label_zPosition.Text = $"SL:{sl} ({dcmidx + 1}/{dcmfiles.Count})";
+                }
+                catch
+                {
+                }
             }
         }
 
@@ -541,13 +584,13 @@ namespace NeedlePath
         {
             text += Environment.NewLine;
             richTextBox1.BackColor = Color.Black;
-            richTextBox1.SelectionColor = color ?? richTextBox1.ForeColor;;
+            richTextBox1.SelectionColor = color ?? richTextBox1.ForeColor; ;
             richTextBox1.SelectionStart = richTextBox1.TextLength;
             richTextBox1.AppendText(text);
             richTextBox1.ScrollToCaret();
             richTextBox1.SelectionColor = richTextBox1.ForeColor;
         }
-        
+
         private void pb_MouseDown(object sender, MouseEventArgs e)
         {
             if (dcmfile != null)
