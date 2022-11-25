@@ -30,9 +30,9 @@ namespace NeedlePath
         const double EXTEND_TIP = 10;       // factor to extend needle trajectory
         const double X_MOUSE_SCALE = 1;     // scaling of width change to mouse movement
         const double Y_MOUSE_SCALE = 1;     // scaling of center change to mouse movement
-        readonly Color COLOR_START = Color.Magenta;
-        readonly Color COLOR_TARGET = Color.Lime;
-        readonly Color COLOR_TIP = Color.Yellow;
+        readonly Color COLOR_START = Color.FromArgb(255, 127, 127);
+        readonly Color COLOR_TARGET = Color.FromArgb(127, 255, 127);
+        readonly Color COLOR_TIP = Color.FromArgb(255, 255, 127);
 
 
         int anchor_width, anchor_center;
