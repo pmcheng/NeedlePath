@@ -584,7 +584,7 @@ namespace NeedlePath
         {
             text += Environment.NewLine;
             richTextBox1.BackColor = Color.Black;
-            richTextBox1.SelectionColor = color ?? richTextBox1.ForeColor; ;
+            richTextBox1.SelectionColor = color ?? richTextBox1.ForeColor;
             richTextBox1.SelectionStart = richTextBox1.TextLength;
             richTextBox1.AppendText(text);
             richTextBox1.ScrollToCaret();
