@@ -185,6 +185,10 @@ namespace NeedlePath
                         toggle_button();
                         repaint();
                         return true;
+                    case Keys.C:
+                        reset_markers();
+                        repaint();
+                        return true;
                 }
             }
             return base.ProcessCmdKey(ref msg, keyData);
@@ -514,6 +518,16 @@ namespace NeedlePath
                     pb_outplane.Image = bmp;
                 }
             }
+            else
+            {
+                bmp = new Bitmap(pb_inplane.Width, pb_inplane.Height);
+                if (pb_inplane.Image != null) pb_inplane.Image.Dispose();
+                pb_inplane.Image = bmp;
+
+                bmp = new Bitmap(pb_outplane.Width, pb_outplane.Height);
+                if (pb_outplane.Image != null) pb_outplane.Image.Dispose();
+                pb_outplane.Image = bmp;
+            }
 
         }
 
@@ -522,17 +536,29 @@ namespace NeedlePath
             showMarkers = !showMarkers;
             if (showMarkers)
             {
-                btn_Markers.Text = "Hide Markers";
+                btn_Markers_Hide.Text = "Hide Markers";
             }
             else
             {
-                btn_Markers.Text = "Show Markers";
+                btn_Markers_Hide.Text = "Show Markers";
             }
         }
 
-        private void btn_Markers_Click(object sender, EventArgs e)
+        private void btn_Markers_Hide_Click(object sender, EventArgs e)
         {
             toggle_button();
+            repaint();
+        }
+
+        private void reset_markers()
+        {
+            start_x = 0; start_y = 0; start_z = 0;
+            target_x = 0; target_y = 0; target_z = 0;
+            tip_x = 0; tip_y = 0; tip_z = 0;
+        }
+        private void btn_Markers_Clear_Click(object sender, EventArgs e)
+        {
+            reset_markers();
             repaint();
         }
 
@@ -663,6 +689,7 @@ namespace NeedlePath
         {
             repaint();
         }
+
 
         private void MainForm_DragDrop(object sender, DragEventArgs e)
         {

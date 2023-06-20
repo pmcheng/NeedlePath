@@ -38,7 +38,7 @@
             this.rbStart = new System.Windows.Forms.RadioButton();
             this.labelTitle = new System.Windows.Forms.Label();
             this.labelAuthor = new System.Windows.Forms.Label();
-            this.btn_Markers = new System.Windows.Forms.Button();
+            this.btn_Markers_Hide = new System.Windows.Forms.Button();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.label_zPosition = new System.Windows.Forms.Label();
             this.label_inplane = new System.Windows.Forms.Label();
@@ -46,6 +46,7 @@
             this.labelVersion = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.btn_Markers_Clear = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pb)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pb_inplane)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pb_outplane)).BeginInit();
@@ -60,9 +61,10 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pb.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.pb.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pb.Location = new System.Drawing.Point(349, 52);
+            this.pb.Location = new System.Drawing.Point(524, 80);
+            this.pb.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.pb.Name = "pb";
-            this.pb.Size = new System.Drawing.Size(400, 400);
+            this.pb.Size = new System.Drawing.Size(599, 614);
             this.pb.TabIndex = 0;
             this.pb.TabStop = false;
             this.pb.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pb_MouseDown);
@@ -72,9 +74,10 @@
             // pb_inplane
             // 
             this.pb_inplane.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pb_inplane.Location = new System.Drawing.Point(9, 272);
+            this.pb_inplane.Location = new System.Drawing.Point(14, 418);
+            this.pb_inplane.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.pb_inplane.Name = "pb_inplane";
-            this.pb_inplane.Size = new System.Drawing.Size(160, 160);
+            this.pb_inplane.Size = new System.Drawing.Size(239, 245);
             this.pb_inplane.TabIndex = 2;
             this.pb_inplane.TabStop = false;
             // 
@@ -82,9 +85,10 @@
             // 
             this.pb_outplane.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.pb_outplane.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pb_outplane.Location = new System.Drawing.Point(175, 272);
+            this.pb_outplane.Location = new System.Drawing.Point(262, 418);
+            this.pb_outplane.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.pb_outplane.Name = "pb_outplane";
-            this.pb_outplane.Size = new System.Drawing.Size(160, 160);
+            this.pb_outplane.Size = new System.Drawing.Size(239, 245);
             this.pb_outplane.TabIndex = 3;
             this.pb_outplane.TabStop = false;
             // 
@@ -93,9 +97,11 @@
             this.groupBox1.Controls.Add(this.rbTip);
             this.groupBox1.Controls.Add(this.rbTarget);
             this.groupBox1.Controls.Add(this.rbStart);
-            this.groupBox1.Location = new System.Drawing.Point(351, 6);
+            this.groupBox1.Location = new System.Drawing.Point(526, 9);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(236, 43);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.groupBox1.Size = new System.Drawing.Size(338, 66);
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Left-click selects";
@@ -103,9 +109,10 @@
             // rbTip
             // 
             this.rbTip.AutoSize = true;
-            this.rbTip.Location = new System.Drawing.Point(185, 19);
+            this.rbTip.Location = new System.Drawing.Point(268, 29);
+            this.rbTip.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.rbTip.Name = "rbTip";
-            this.rbTip.Size = new System.Drawing.Size(40, 17);
+            this.rbTip.Size = new System.Drawing.Size(55, 24);
             this.rbTip.TabIndex = 2;
             this.rbTip.Text = "&Tip";
             this.rbTip.UseVisualStyleBackColor = true;
@@ -113,9 +120,10 @@
             // rbTarget
             // 
             this.rbTarget.AutoSize = true;
-            this.rbTarget.Location = new System.Drawing.Point(97, 19);
+            this.rbTarget.Location = new System.Drawing.Point(141, 29);
+            this.rbTarget.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.rbTarget.Name = "rbTarget";
-            this.rbTarget.Size = new System.Drawing.Size(56, 17);
+            this.rbTarget.Size = new System.Drawing.Size(80, 24);
             this.rbTarget.TabIndex = 1;
             this.rbTarget.Text = "Ta&rget";
             this.rbTarget.UseVisualStyleBackColor = true;
@@ -124,9 +132,10 @@
             // 
             this.rbStart.AutoSize = true;
             this.rbStart.Checked = true;
-            this.rbStart.Location = new System.Drawing.Point(22, 19);
+            this.rbStart.Location = new System.Drawing.Point(33, 29);
+            this.rbStart.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.rbStart.Name = "rbStart";
-            this.rbStart.Size = new System.Drawing.Size(47, 17);
+            this.rbStart.Size = new System.Drawing.Size(69, 24);
             this.rbStart.TabIndex = 0;
             this.rbStart.TabStop = true;
             this.rbStart.Text = "&Start";
@@ -137,9 +146,10 @@
             this.labelTitle.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.labelTitle.AutoSize = true;
             this.labelTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelTitle.Location = new System.Drawing.Point(116, 2);
+            this.labelTitle.Location = new System.Drawing.Point(176, 4);
+            this.labelTitle.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelTitle.Name = "labelTitle";
-            this.labelTitle.Size = new System.Drawing.Size(94, 18);
+            this.labelTitle.Size = new System.Drawing.Size(136, 26);
             this.labelTitle.TabIndex = 5;
             this.labelTitle.Text = "NeedlePath";
             this.labelTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -149,22 +159,24 @@
             this.labelAuthor.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.labelAuthor.AutoSize = true;
             this.labelAuthor.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.5F);
-            this.labelAuthor.Location = new System.Drawing.Point(86, 23);
+            this.labelAuthor.Location = new System.Drawing.Point(135, 36);
+            this.labelAuthor.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelAuthor.Name = "labelAuthor";
-            this.labelAuthor.Size = new System.Drawing.Size(153, 16);
+            this.labelAuthor.Size = new System.Drawing.Size(219, 24);
             this.labelAuthor.TabIndex = 6;
             this.labelAuthor.Text = "by Phillip Cheng, MD MS";
             this.labelAuthor.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // btn_Markers
+            // btn_Markers_Hide
             // 
-            this.btn_Markers.Location = new System.Drawing.Point(594, 4);
-            this.btn_Markers.Name = "btn_Markers";
-            this.btn_Markers.Size = new System.Drawing.Size(155, 25);
-            this.btn_Markers.TabIndex = 7;
-            this.btn_Markers.Text = "Hide Markers";
-            this.btn_Markers.UseVisualStyleBackColor = true;
-            this.btn_Markers.Click += new System.EventHandler(this.btn_Markers_Click);
+            this.btn_Markers_Hide.Location = new System.Drawing.Point(882, 6);
+            this.btn_Markers_Hide.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btn_Markers_Hide.Name = "btn_Markers_Hide";
+            this.btn_Markers_Hide.Size = new System.Drawing.Size(120, 38);
+            this.btn_Markers_Hide.TabIndex = 7;
+            this.btn_Markers_Hide.Text = "Hide Markers";
+            this.btn_Markers_Hide.UseVisualStyleBackColor = true;
+            this.btn_Markers_Hide.Click += new System.EventHandler(this.btn_Markers_Hide_Click);
             // 
             // backgroundWorker1
             // 
@@ -176,26 +188,29 @@
             // label_zPosition
             // 
             this.label_zPosition.AutoSize = true;
-            this.label_zPosition.Location = new System.Drawing.Point(599, 33);
+            this.label_zPosition.Location = new System.Drawing.Point(898, 51);
+            this.label_zPosition.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label_zPosition.Name = "label_zPosition";
-            this.label_zPosition.Size = new System.Drawing.Size(0, 13);
+            this.label_zPosition.Size = new System.Drawing.Size(0, 20);
             this.label_zPosition.TabIndex = 8;
             // 
             // label_inplane
             // 
             this.label_inplane.AutoSize = true;
-            this.label_inplane.Location = new System.Drawing.Point(53, 437);
+            this.label_inplane.Location = new System.Drawing.Point(80, 672);
+            this.label_inplane.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label_inplane.Name = "label_inplane";
-            this.label_inplane.Size = new System.Drawing.Size(73, 13);
+            this.label_inplane.Size = new System.Drawing.Size(108, 20);
             this.label_inplane.TabIndex = 9;
             this.label_inplane.Text = "in-plane angle";
             // 
             // label_outplane
             // 
             this.label_outplane.AutoSize = true;
-            this.label_outplane.Location = new System.Drawing.Point(209, 437);
+            this.label_outplane.Location = new System.Drawing.Point(314, 672);
+            this.label_outplane.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label_outplane.Name = "label_outplane";
-            this.label_outplane.Size = new System.Drawing.Size(92, 13);
+            this.label_outplane.Size = new System.Drawing.Size(138, 20);
             this.label_outplane.TabIndex = 10;
             this.label_outplane.Text = "out-of-plane angle";
             // 
@@ -203,9 +218,10 @@
             // 
             this.labelVersion.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.labelVersion.AutoSize = true;
-            this.labelVersion.Location = new System.Drawing.Point(100, 42);
+            this.labelVersion.Location = new System.Drawing.Point(151, 65);
+            this.labelVersion.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelVersion.Name = "labelVersion";
-            this.labelVersion.Size = new System.Drawing.Size(126, 13);
+            this.labelVersion.Size = new System.Drawing.Size(187, 20);
             this.labelVersion.TabIndex = 11;
             this.labelVersion.Text = "Last Build Date and Time";
             this.labelVersion.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -217,13 +233,14 @@
             this.tableLayoutPanel1.Controls.Add(this.labelTitle, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.labelVersion, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.labelAuthor, 0, 1);
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(9, 4);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(14, 6);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 3;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 40F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 30F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 30F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(326, 58);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(489, 89);
             this.tableLayoutPanel1.TabIndex = 12;
             // 
             // richTextBox1
@@ -232,30 +249,43 @@
             this.richTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.richTextBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.richTextBox1.ForeColor = System.Drawing.Color.White;
-            this.richTextBox1.Location = new System.Drawing.Point(9, 68);
+            this.richTextBox1.Location = new System.Drawing.Point(14, 105);
+            this.richTextBox1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(326, 197);
+            this.richTextBox1.Size = new System.Drawing.Size(487, 301);
             this.richTextBox1.TabIndex = 13;
             this.richTextBox1.Text = "";
+            // 
+            // btn_Markers_Clear
+            // 
+            this.btn_Markers_Clear.Location = new System.Drawing.Point(1002, 6);
+            this.btn_Markers_Clear.Name = "btn_Markers_Clear";
+            this.btn_Markers_Clear.Size = new System.Drawing.Size(121, 38);
+            this.btn_Markers_Clear.TabIndex = 14;
+            this.btn_Markers_Clear.Text = "Clear Markers";
+            this.btn_Markers_Clear.UseVisualStyleBackColor = true;
+            this.btn_Markers_Clear.Click += new System.EventHandler(this.btn_Markers_Clear_Click);
             // 
             // MainForm
             // 
             this.AllowDrop = true;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(761, 461);
+            this.ClientSize = new System.Drawing.Size(1142, 709);
+            this.Controls.Add(this.btn_Markers_Clear);
             this.Controls.Add(this.richTextBox1);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.label_outplane);
             this.Controls.Add(this.label_inplane);
             this.Controls.Add(this.label_zPosition);
-            this.Controls.Add(this.btn_Markers);
+            this.Controls.Add(this.btn_Markers_Hide);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.pb_outplane);
             this.Controls.Add(this.pb_inplane);
             this.Controls.Add(this.pb);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MinimumSize = new System.Drawing.Size(777, 500);
+            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.MinimumSize = new System.Drawing.Size(1154, 739);
             this.Name = "MainForm";
             this.Text = "NeedlePath";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
@@ -285,7 +315,7 @@
         private System.Windows.Forms.RadioButton rbStart;
         private System.Windows.Forms.Label labelTitle;
         private System.Windows.Forms.Label labelAuthor;
-        private System.Windows.Forms.Button btn_Markers;
+        private System.Windows.Forms.Button btn_Markers_Hide;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private System.Windows.Forms.Label label_zPosition;
         private System.Windows.Forms.Label label_inplane;
@@ -293,6 +323,7 @@
         private System.Windows.Forms.Label labelVersion;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.RichTextBox richTextBox1;
+        private System.Windows.Forms.Button btn_Markers_Clear;
     }
 }
 
