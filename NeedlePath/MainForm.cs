@@ -53,10 +53,6 @@ namespace NeedlePath
 
             Version v = Assembly.GetExecutingAssembly().GetName().Version;
             DateTime compileDate = new DateTime(2000, 1, 1).Add(new TimeSpan(v.Build * TimeSpan.TicksPerDay + v.Revision * TimeSpan.TicksPerSecond * 2));
-            if (TimeZone.IsDaylightSavingTime(compileDate, TimeZone.CurrentTimeZone.GetDaylightChanges(compileDate.Year)))
-            {
-                compileDate = compileDate.AddHours(1);
-            }
             this.labelVersion.Text = $"Build {compileDate}";
 
             new DicomSetupBuilder().RegisterServices(s => s.AddFellowOakDicom().AddImageManager<WinFormsImageManager>()).Build();
