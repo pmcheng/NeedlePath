@@ -169,10 +169,10 @@
             // 
             // btn_Markers_Hide
             // 
-            this.btn_Markers_Hide.Location = new System.Drawing.Point(882, 6);
+            this.btn_Markers_Hide.Location = new System.Drawing.Point(872, 6);
             this.btn_Markers_Hide.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btn_Markers_Hide.Name = "btn_Markers_Hide";
-            this.btn_Markers_Hide.Size = new System.Drawing.Size(120, 38);
+            this.btn_Markers_Hide.Size = new System.Drawing.Size(130, 38);
             this.btn_Markers_Hide.TabIndex = 7;
             this.btn_Markers_Hide.Text = "Hide Markers";
             this.btn_Markers_Hide.UseVisualStyleBackColor = true;
