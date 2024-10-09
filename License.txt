@@ -1,6 +1,9 @@
+Unless otherwise specified, the NeedlePath software has the following
+copyright:
+
 The MIT License
 
-Copyright (c) 2022 Phillip Cheng
+Copyright (c) 2022-4 Phillip Cheng, MD
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,6 +22,13 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+
+----
+
+NeedlePath uses the Fellow Oak DICOM library which has separate copyright 
+notices and license terms. Your use of the source code for this library is 
+subject to the terms and conditions of the following licenses:   
 
 
 ---- Fellow Oak DICOM (from License.txt) ----

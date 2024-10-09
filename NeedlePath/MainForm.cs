@@ -59,6 +59,13 @@ namespace NeedlePath
             pb.MouseWheel += new MouseEventHandler(this.pb_MouseWheel);
             syn = new Synapse5();
 
+            DialogResult result = MessageBox.Show(this, "This software is for educational purposes. " +
+                "It has not been validated for clinical use.  Do you want to continue?",
+                "NeedlePath - Disclaimer", MessageBoxButtons.YesNo);
+            if (result == DialogResult.No)
+            {
+                Load += (s, e) => Close();
+            }
         }
 
         private void load_dicom()
@@ -685,6 +692,7 @@ namespace NeedlePath
         {
             repaint();
         }
+
 
 
         private void MainForm_DragDrop(object sender, DragEventArgs e)
