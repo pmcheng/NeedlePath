@@ -1,5 +1,6 @@
 ﻿using FellowOakDicom;
 using FellowOakDicom.Imaging;
+using Newtonsoft.Json;
 using Synapse5Lib;
 using System;
 using System.Collections.Generic;
@@ -8,9 +9,9 @@ using System.Drawing.Drawing2D;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Windows.Forms;
+using System.Text;
 using System.Web;
-
+using System.Windows.Forms;
 
 namespace NeedlePath
 {
@@ -682,7 +683,7 @@ namespace NeedlePath
                 e.Effect = DragDropEffects.Copy;
                 return;
             }
-            if (e.Data.GetDataPresent("Text"))
+            if (e.Data.GetDataPresent("Text") || e.Data.GetDataPresent("CF_Synapse.ImageState_JSON"))
             {
                 e.Effect = DragDropEffects.Copy;
             }
@@ -699,9 +700,21 @@ namespace NeedlePath
         {
             if (backgroundWorker1.IsBusy) return;
 
+            string datasource = "";
             if (e.Data.GetDataPresent("Text"))
             {
-                string datasource = (String)e.Data.GetData("Text");
+                datasource = (String)e.Data.GetData("Text");
+            }
+            if (e.Data.GetDataPresent("CF_Synapse.ImageState_JSON")) // for Synapse VX
+            {
+                MemoryStream ms = e.Data.GetData("CF_Synapse.ImageState_JSON") as MemoryStream;
+                byte[] byteArray = ms.ToArray();
+                string vx_json = Encoding.UTF8.GetString(byteArray);
+                dynamic jobj = JsonConvert.DeserializeObject(vx_json);
+                datasource = jobj.data.sourceUrl;
+            }
+            if (datasource != "")
+            {
                 System.Collections.Specialized.NameValueCollection qscoll = HttpUtility.ParseQueryString(datasource);
 
                 String studyUID = qscoll.Get("studyUID");
